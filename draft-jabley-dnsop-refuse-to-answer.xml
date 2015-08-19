@@ -12,8 +12,8 @@
     'http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-dnsop-dns-terminology.xml'>
 ]>
 
-<rfc category="std" ipr="trust200902" updates="1034, 1035"
-  docName="draft-jabley-dnsop-ordered-answers-00">
+<rfc category="std" ipr="trust200902" updates="1035"
+  docName="draft-jabley-dnsop-refuse-to-answer-00">
 
   <?rfc toc="yes" ?>
   <?rfc symrefs="yes" ?>
@@ -22,8 +22,7 @@
   <?rfc strict="yes" ?>
 
   <front>
-    <title abbrev="Ordering of RRSets in the Answer Section">Ordering of
-      RRSets in the Answer Section of DNS Messages</title>
+    <title>Signalling Refusal to Answer DNS Queries</title>
 
     <author initials='J.' surname="Abley" fullname='Joe Abley'>
       <organization>Dyn, Inc.</organization>
@@ -40,13 +39,48 @@
       </address>
     </author>
 
-    <date day="17" month="August" year="2015"/>
+    <author initials="O." surname="Gudmundsson" fullname="Olafur Gudmundsson">
+      <organization>CloudFlare Inc.</organization>
+      <address>
+        <postal>
+          <city>San Francisco</city>
+          <region>CA</region>
+          <code>94107</code>
+          <country>USA</country>
+        </postal>
+        <email>olafur@cloudflare.com</email>
+      </address>
+    </author>
+
+    <author initials="M." surname="Majkowski" fullname="Marek Majkowski">
+      <organization>CloudFlare Inc.</organization>
+      <address>
+        <postal>
+          <city>London</city>
+          <country>UK</country>
+        </postal>
+        <email>marek@cloudflare.com</email>
+      </address>
+    </author>
+
+    <date day="19" month="August" year="2015"/>
 
     <abstract>
-      <t>The existing Domain Name System (DNS) specifications do
-        not unambiguously specify the process by which an answer
-        section is assembled, particularly in the event that the
-        answer section contains multiple resource record sets.</t>
+      <t>The Domain Name System (DNS) supports queries that the
+	operator of an authoritative DNS server might choose not
+	to respond to, such as queries with QTYPE "ANY", or QTYPE
+	"RRSIG".  Such local policy might be motivated by a desire
+	to reduce the amplification potential of a DNS server, or
+	to optimise nameserver performance.</t>
+
+      <t>The DNS specification does not include specific guidance
+	for the behaviour of DNS servers or clients in this situation,
+        and as a result there is no clear
+
+      <t>This document describes a standard way to 
+
+      <t>In the event that a DNS operator institutes such a local policy,
+        this document describes 
 
       <t>This document updates RFC 1034 and RFC 1035 to provide
         a clear specification, consistent with deployed code.</t>
