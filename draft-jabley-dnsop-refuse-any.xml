@@ -13,7 +13,7 @@
 ]>
 
 <rfc category="std" ipr="trust200902" updates="1035"
-  docName="draft-jabley-dnsop-refuse-to-answer-00">
+  docName="draft-jabley-dnsop-refuse-any-00">
 
   <?rfc toc="yes" ?>
   <?rfc symrefs="yes" ?>
