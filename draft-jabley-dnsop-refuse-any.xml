@@ -43,12 +43,6 @@
     <author initials="O." surname="Gudmundsson" fullname="Olafur Gudmundsson">
       <organization>CloudFlare Inc.</organization>
       <address>
-        <postal>
-          <city>San Francisco</city>
-          <region>CA</region>
-          <code>94107</code>
-          <country>USA</country>
-        </postal>
         <email>olafur@cloudflare.com</email>
       </address>
     </author>
@@ -56,10 +50,6 @@
     <author initials="M." surname="Majkowski" fullname="Marek Majkowski">
       <organization>CloudFlare Inc.</organization>
       <address>
-        <postal>
-          <city>London</city>
-          <country>UK</country>
-        </postal>
         <email>marek@cloudflare.com</email>
       </address>
     </author>
