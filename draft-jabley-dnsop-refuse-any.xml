@@ -22,7 +22,7 @@
   <?rfc strict="yes" ?>
 
   <front>
-    <title>Signalling Refusal to Answer DNS Queries</title>
+    <title>Declining to Answer DNS Queries with QTYPE=ANY</title>
 
     <author initials='J.' surname="Abley" fullname='Joe Abley'>
       <organization>Dyn, Inc.</organization>
@@ -66,24 +66,14 @@
     <date day="19" month="August" year="2015"/>
 
     <abstract>
-      <t>The Domain Name System (DNS) supports queries that the
-	operator of an authoritative DNS server might choose not
-	to respond to, such as queries with QTYPE "ANY", or QTYPE
-	"RRSIG".  Such local policy might be motivated by a desire
-	to reduce the amplification potential of a DNS server, or
-	to optimise nameserver performance.</t>
+      <t>The Domain Name System (DNS) specifies a query type (QTYPE)
+        "ANY". The operator of an authoritative DNS server might choose
+        not to respond to such queries for reasons of local policy,
+        motivated by security, performance or other reasons.</t>
 
       <t>The DNS specification does not include specific guidance
-	for the behaviour of DNS servers or clients in this situation,
-        and as a result there is no clear
-
-      <t>This document describes a standard way to 
-
-      <t>In the event that a DNS operator institutes such a local policy,
-        this document describes 
-
-      <t>This document updates RFC 1034 and RFC 1035 to provide
-        a clear specification, consistent with deployed code.</t>
+	for the behaviour of DNS servers or clients in this situation.
+        This document aims to provide such guidance.</t>
     </abstract>
   </front>
 
@@ -103,73 +93,35 @@
         described in <xref target="RFC2119"/>.</t>
     </section>
 
-
     <section title="Introduction">
-      <t><xref target="RFC1034"/> specifies an algorithm for use by
-        responders when constructing a DNS response. This algorithm
-        in some cases can result in multiple RRSets being included
-        in the answer section, e.g. when handling CNAME resource
-        records.</t>
-
-      <t>Many responder implementations [citation needed] have
-	interpreted the direction to copy or store particular RRSets
-	in the answer section of a DNS response to mean "append",
-        treating the answer section as an ordered list of RRSets,
-	and some initiators [citation needed] are known to rely
-	upon that interpretation.</t>
-
-      <t>This document updates <xref target="RFC1035"/> to specify
-        that the answer section is an ordered list of RRSets, and
-        clarifies the algorithm specified in <xref target="RFC1034"/>
-        section 4.3.2 to match the observed behaviour and expectations
-        of deployed software.</t>
+      <t>Struggle to find something to say that wasn't already covered
+        by the abstract. Perhaps describe conventional responses to
+        QTYPE=ANY queries as context for the following section.</t>
     </section>
 
-    <section title="Updates to RFC 1034" anchor="algorithm">
-      <t><xref target="RFC1034"/> section 4.3.2 specifies the
-        algorithm by which an answer section of a DNS response
-        is constructed by a responder. The following clarifications
-        relate to the steps described in that section.</t>
-
-      <t>
-        <list style="hanging">
-          <t hangText="Step 3(a):">The word "copy" should be
-            interpreted in every case as meaning that the resource
-            records specified are to be appended to the answer section
-            of the DNS response under construction.</t>
-
-          <t hangText="Step 3(c):">The word "copy" in the final
-            paragraph, the word "copy" should be interpreted in the
-            same way as described above.</t>
-
-          <t hangText="Step 4:">The word "copy" should be
-            interpreted in the same way as described above.</t>
-
-          <t hangText="Step 5:">The word "store" should be
-            interpreted in the same way as described for the word
-            "copy", above.</t>
-	</list>
-      </t>
+    <section title="Motivations">
+      <t>Describe use-cases for suppressing conventional responses to
+        QTYPE=ANY queries here.</t>
     </section>
 
-    <section title="Updates to RFC 1035">
-      <t>In a DNS message, the answer section MUST be considered to be
-        an ordered set of resource records.</t>
+    <section title="Behaviour of DNS Responders">
+    </section>
 
-      <t>DNS responders MUST construct the answer
-        section in a DNS response according to the algorithm specified
-        in <xref target="RFC1034"/> section 4.3.2, as updated by
-        <xref target="algorithm"/> of this document.</t>
+    <section title="Behaviour of DNS Initiators">
+    </section>
 
-      <t>DNS initiators that receive a DNS response with an answer
-        section that is ordered differently to this specification SHOULD
-        discard the response and continue as if no response was
-        received.</t>
+    <section title="Changes to RFC 1035">
     </section>
 
     <section title="Security Considerations">
-      <t>The recommendations contained in this document have no
-        known security implications.</t>
+      <t>Queries with QTYPE=ANY are frequently observed as part of
+	reflection attacks, since a relatively small query can be
+	used to elicit a large response; this is a desirable
+	characteristic if the goal is to maximise the amplification
+	potential of a DNS server as part of a volumetric attack.
+	The ability of a DNS operator to suppress such responses
+	on a particular server makes that server a less useful
+	amplifier.</t>
     </section>
 
     <section title="IANA Considerations">
