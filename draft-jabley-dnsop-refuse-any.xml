@@ -22,7 +22,8 @@
   <?rfc strict="yes" ?>
 
   <front>
-    <title>Declining to Answer DNS Queries with QTYPE=ANY</title>
+    <title abbrev="Minimal Answers for QTYPE=ANY">Providing
+      Minimal-Sized Answers to DNS Queries with QTYPE=ANY</title>
 
     <author initials='J.' surname="Abley" fullname='Joe Abley'>
       <organization>Dyn, Inc.</organization>
@@ -104,13 +105,41 @@
         QTYPE=ANY queries here.</t>
     </section>
 
-    <section title="Behaviour of DNS Responders">
+    <section title="Behaviour of DNS Responders" anchor="responder">
+      <t>A DNS responder which receives a query with QTYPE=ANY MAY
+	decline to provide a conventional response, and instead
+	send a response with a single HINFO resource record in the
+	answer section.  The CPU field of the HINFO RDATA SHOULD
+	be set to RFCXXXX [note to RFC Editor, replace with RFC
+	number assigned to this document].  The OS field of the
+	HINFO RDATA SHOULD be set to the null string to minimise
+	the size of the response.</t>
+
+      <t>If the DNS query includes DO=1 and the QNAME corresponds
+        to a zone that is known by the responder to be signed, valid
+        RRSIG resource records should also be returned.</t>
+
+      <t>Except as described in this section, the DNS responder
+	MUST follow the standard algorithms when constructing a
+	response.</t>
     </section>
 
     <section title="Behaviour of DNS Initiators">
+      <t>A DNS initator which sends a query with QTYPE=ANY and
+        receives a response containing an HINFO, as described in
+        <xref target="responder"/>, MAY cache the HINFO response
+        in the normal way. Such cached HINFO resource records should
+        be retained in the cache following normal caching semantics,
+        as would be used for any other cached response.</t>
+
+      <t>A DNS initiator MAY suppress queries with QTYPE=ANY in the
+        event that the local cache contains a matching HINFO resource
+        record with RDATA.CPU as described in <xref target="responder"/>.</t>
     </section>
 
     <section title="Changes to RFC 1035">
+      <t>Spell out the particular changes to 1035 implied by this
+        document.</t>
     </section>
 
     <section title="Security Considerations">
@@ -122,6 +151,10 @@
 	The ability of a DNS operator to suppress such responses
 	on a particular server makes that server a less useful
 	amplifier.</t>
+
+      <t>The optional behaviour described in this document to reduce
+        the size of responses to queries with QTYPE=ANY is compatible
+        with the use of DNSSEC by both initiator and responder.</t>
     </section>
 
     <section title="IANA Considerations">
