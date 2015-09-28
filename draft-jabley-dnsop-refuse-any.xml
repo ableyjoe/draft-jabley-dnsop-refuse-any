@@ -90,9 +90,15 @@
     </section>
 
     <section title="Introduction">
-      <t>Struggle to find something to say that wasn't already covered
-        by the abstract. Perhaps describe conventional responses to
-        QTYPE=ANY queries as context for the following section.</t>
+      <t>The Domain Name System (DNS) specifies a query type (QTYPE)
+        "ANY". The operator of an authoritative DNS server might choose
+        not to respond to such queries for reasons of local policy,
+        motivated by security, performance or other reasons.</t>
+
+      <t>The DNS specification <xref target="RFC1034"/> <xref
+        target="RFC1035"/> does not include specific guidance
+	for the behaviour of DNS servers or clients in this situation.
+	This document aims to provide such guidance.</t>
     </section>
 
     <section title="Motivations">
