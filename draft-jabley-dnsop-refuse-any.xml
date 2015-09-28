@@ -138,6 +138,7 @@
         in the response to an ANY query, providing resolvers with
         something to cache and effectively suppressing repeat queries
         to the same or different authority servers.</t>
+    </section>
 
     <section title="Behaviour of DNS Responders" anchor="responder">
       <t>A DNS responder which receives an ANY query MAY
@@ -172,9 +173,9 @@
     </section>
 
     <section title="Behaviour of DNS Initiators">
-	<t> OG: I think this talking both about Recursive Resovlers
-	and Stub-resolvers/clients I think we break this down into
-	diferent cases. </t>
+      <t>XXX consider whether separate text here is required depending
+        on whether the initiator is a non-caching stub resolver or
+        a caching recursive resolver.</t>
 
       <t>A DNS initator which sends a query with QTYPE=ANY and
         receives a response containing an HINFO, as described in

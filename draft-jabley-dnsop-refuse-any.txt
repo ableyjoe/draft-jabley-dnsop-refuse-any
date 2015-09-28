@@ -5,8 +5,8 @@ Network Working Group                                           J. Abley
 Internet-Draft                                                 Dyn, Inc.
 Updates: 1035 (if approved)                               O. Gudmundsson
 Intended status: Standards Track                            M. Majkowski
-Expires: February 20, 2016                               CloudFlare Inc.
-                                                         August 19, 2015
+Expires: March 22, 2016                                  CloudFlare Inc.
+                                                      September 19, 2015
 
 
      Providing Minimal-Sized Answers to DNS Queries with QTYPE=ANY
@@ -38,7 +38,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 20, 2016.
+   This Internet-Draft will expire on March 22, 2016.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Abley, et al.           Expires February 20, 2016               [Page 1]
+Abley, et al.            Expires March 22, 2016                 [Page 1]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
    carefully, as they describe your rights and restrictions with respect
@@ -69,20 +69,22 @@ Table of Contents
    1.  Terminology  . . . . . . . . . . . . . . . . . . . . . . . . .  3
    2.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  4
    3.  Motivations  . . . . . . . . . . . . . . . . . . . . . . . . .  5
-   4.  Behaviour of DNS Responders  . . . . . . . . . . . . . . . . .  6
-   5.  Behaviour of DNS Initiators  . . . . . . . . . . . . . . . . .  7
-   6.  Changes to RFC 1035  . . . . . . . . . . . . . . . . . . . . .  8
-   7.  Security Considerations  . . . . . . . . . . . . . . . . . . .  9
-   8.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 10
-   9.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 11
-   10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 12
-     10.1.  Normative References  . . . . . . . . . . . . . . . . . . 12
-     10.2.  Informative References  . . . . . . . . . . . . . . . . . 12
-   Appendix A.  Editorial Notes . . . . . . . . . . . . . . . . . . . 13
-     A.1.   Venue . . . . . . . . . . . . . . . . . . . . . . . . . . 13
-     A.2.   Change History  . . . . . . . . . . . . . . . . . . . . . 13
-       A.2.1.  draft-jabley-dnsop-ordered-answers-00  . . . . . . . . 13
-   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 14
+   4.  Impact on Recursive Resolvers  . . . . . . . . . . . . . . . .  6
+   5.  Behaviour of DNS Responders  . . . . . . . . . . . . . . . . .  7
+   6.  Behaviors of DNS resolvers . . . . . . . . . . . . . . . . . .  8
+   7.  Behaviour of DNS Initiators  . . . . . . . . . . . . . . . . .  9
+   8.  Changes to RFC 1035  . . . . . . . . . . . . . . . . . . . . . 10
+   9.  Security Considerations  . . . . . . . . . . . . . . . . . . . 11
+   10. IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 12
+   11. Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 13
+   12. References . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+     12.1.  Normative References  . . . . . . . . . . . . . . . . . . 14
+     12.2.  Informative References  . . . . . . . . . . . . . . . . . 14
+   Appendix A.  Editorial Notes . . . . . . . . . . . . . . . . . . . 15
+     A.1.   Venue . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+     A.2.   Change History  . . . . . . . . . . . . . . . . . . . . . 15
+       A.2.1.  draft-jabley-dnsop-ordered-answers-00  . . . . . . . . 15
+   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 16
 
 
 
@@ -106,11 +108,9 @@ Table of Contents
 
 
 
-
-
-Abley, et al.           Expires February 20, 2016               [Page 2]
+Abley, et al.            Expires March 22, 2016                 [Page 2]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
 1.  Terminology
@@ -118,6 +118,8 @@ Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
    This document uses terminology specific to the Domain Name System
    (DNS), descriptions of which can be found in
    [I-D.ietf-dnsop-dns-terminology].
+
+   In this document, "ANY Query" refers to a DNS query with QTYPE=ANY.
 
    In an exchange of DNS messages between two hosts, this document
    refers to the host sending a DNS request as the initiator, and the
@@ -162,11 +164,9 @@ Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
 
 
 
-
-
-Abley, et al.           Expires February 20, 2016               [Page 3]
+Abley, et al.            Expires March 22, 2016                 [Page 3]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
 2.  Introduction
@@ -220,15 +220,37 @@ Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
 
 
 
-Abley, et al.           Expires February 20, 2016               [Page 4]
+Abley, et al.            Expires March 22, 2016                 [Page 4]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
 3.  Motivations
 
-   Describe use-cases for suppressing conventional responses to
-   QTYPE=ANY queries here.
+   ANY queries are legitimately used for debugging and checking the
+   state of a DNS server for a particular owner name.  ANY queries are
+   sometimes used as a attempt to reduce the number of queries needed to
+   get information, e.g. to obtain MX, A and AAAA RRSets for a mail
+   domain in a single query, although there is no documented guidance
+   available for this use case and some implementations have been
+   observed that appear not to function as perhaps their developers
+   expected.
+
+   ANY queries are also frequently used to exploit the amplification
+   potential of DNS servers using spoofed source addresses and UDP
+   transport (see [RFC5358]).  Having the ability to return small
+   responses to such queries makes DNS servers less attractive
+   amplifiers.
+
+   ANY queries are sometimes used to help mine authoritative-only DNS
+   servers for zone data, since they return all RRSets for a particular
+   owner name.  A DNS server operator might prefer not to send
+   conventional ANY responses to reduce the potential for such
+   information leaks.
+
+   Some authoritative-only DNS server implementations require additional
+   processing in order to send a conventional response to an ANY query,
+   and avoiding that processing expense may be desirable.
 
 
 
@@ -254,46 +276,84 @@ Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.           Expires February 20, 2016               [Page 5]
+Abley, et al.            Expires March 22, 2016                 [Page 5]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
-4.  Behaviour of DNS Responders
+4.  Impact on Recursive Resolvers
 
-   A DNS responder which receives a query with QTYPE=ANY MAY decline to
-   provide a conventional response, and instead send a response with a
-   single HINFO resource record in the answer section.  The CPU field of
-   the HINFO RDATA SHOULD be set to RFCXXXX [note to RFC Editor, replace
+   Alternative proposals for dealing with ANY queries have been
+   discussed.  One approach proposed using a new RCODE to signal that an
+   authortitaive server did not answer ANY queries in the standard way.
+   This approach was found to have an undesirable effect on both
+   resolvers and authoritative-only servers; resolvers receiving an
+   unknown RCODE caused them to re-send the same query to all available
+   authoritative servers, rather than suppress future such ANY queries
+   for the same QNAME.
+
+   This proposal avoids that outcome by returning an RRSet in the
+   response to an ANY query, providing resolvers with something to cache
+   and effectively suppressing repeat queries to the same or different
+   authority servers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Abley, et al.            Expires March 22, 2016                 [Page 6]
+
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
+
+
+5.  Behaviour of DNS Responders
+
+   A DNS responder which receives an ANY query MAY decline to provide a
+   conventional response, and instead send a response with a single
+   HINFO resource record in the answer section.  The CPU field of the
+   HINFO RDATA SHOULD be set to RFCXXXX [note to RFC Editor, replace
    with RFC number assigned to this document].  The OS field of the
    HINFO RDATA SHOULD be set to the null string to minimise the size of
    the response.
 
    If the DNS query includes DO=1 and the QNAME corresponds to a zone
    that is known by the responder to be signed, valid RRSIG resource
-   records should also be returned.
+   records MAY be returned.  However, the responder MAY return an
+   unsigned answer; a validating initiator that sends a subsequent
+   explicit query with QTYPE=HINFO will receive a signed proof that the
+   HINFO does not exist or a signed HINFO RRSet, either of which can be
+   cached to suppress repeated queries.
 
    Except as described in this section, the DNS responder MUST follow
    the standard algorithms when constructing a response.
@@ -328,26 +388,83 @@ Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
 
 
 
-
-
-
-
-Abley, et al.           Expires February 20, 2016               [Page 6]
+Abley, et al.            Expires March 22, 2016                 [Page 7]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
-5.  Behaviour of DNS Initiators
+6.  Behaviors of DNS resolvers
+
+   A DNS resolver that forwards an ANY query and gets back a response
+   with a single HINFO record SHOULD cache that as normal record to
+   suppress any further ANY queries from clients.  Performing DNSSEC
+   valiation on this answer is OPTIONAL.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Abley, et al.            Expires March 22, 2016                 [Page 8]
+
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
+
+
+7.  Behaviour of DNS Initiators
+
+   XXX consider whether separate text here is required depending on
+   whether the initiator is a non-caching stub resolver or a caching
+   recursive resolver.
 
    A DNS initator which sends a query with QTYPE=ANY and receives a
-   response containing an HINFO, as described in Section 4, MAY cache
+   response containing an HINFO, as described in Section 5, MAY cache
    the HINFO response in the normal way.  Such cached HINFO resource
-   records should be retained in the cache following normal caching
-   semantics, as would be used for any other cached response.
+   records SHOULD be retained in the cache following normal caching
+   semantics, as it would with any other response received from a DNS
+   responder.
 
    A DNS initiator MAY suppress queries with QTYPE=ANY in the event that
    the local cache contains a matching HINFO resource record with
-   RDATA.CPU as described in Section 4.
+   RDATA.CPU as described in Section 5.
 
 
 
@@ -383,32 +500,24 @@ Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
 
 
 
-
-
-
-
-
-Abley, et al.           Expires February 20, 2016               [Page 7]
+Abley, et al.            Expires March 22, 2016                 [Page 9]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
-6.  Changes to RFC 1035
+8.  Changes to RFC 1035
 
-   Spell out the particular changes to 1035 implied by this document.
+   It is important to note that returning a subset of available RRSets
+   when processing an ANY query is legitimate and consistent with
+   [RFC1035]; ANY does not mean ALL.
 
+   This document describes optional behaviour for both DNS initators and
+   responders, and implementation of the guidance provided by this
+   document is OPTIONAL.
 
-
-
-
-
-
-
-
-
-
-
-
+   XXX more words here about any updates implied to RFC 1035, or delete
+   the section if it turns out that, in the final analysis, there are
+   none.
 
 
 
@@ -444,12 +553,15 @@ Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
 
 
 
-Abley, et al.           Expires February 20, 2016               [Page 8]
+
+
+
+Abley, et al.            Expires March 22, 2016                [Page 10]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
-7.  Security Considerations
+9.  Security Considerations
 
    Queries with QTYPE=ANY are frequently observed as part of reflection
    attacks, since a relatively small query can be used to elicit a large
@@ -500,12 +612,12 @@ Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
 
 
 
-Abley, et al.           Expires February 20, 2016               [Page 9]
+Abley, et al.            Expires March 22, 2016                [Page 11]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
-8.  IANA Considerations
+10.  IANA Considerations
 
    This document has no IANA actions.
 
@@ -556,12 +668,12 @@ Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
 
 
 
-Abley, et al.           Expires February 20, 2016              [Page 10]
+Abley, et al.            Expires March 22, 2016                [Page 12]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
-9.  Acknowledgements
+11.  Acknowledgements
 
    Your name here, etc.
 
@@ -612,14 +724,14 @@ Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
 
 
 
-Abley, et al.           Expires February 20, 2016              [Page 11]
+Abley, et al.            Expires March 22, 2016                [Page 13]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
-10.  References
+12.  References
 
-10.1.  Normative References
+12.1.  Normative References
 
    [RFC1034]  Mockapetris, P., "Domain names - concepts and facilities",
               STD 13, RFC 1034, DOI 10.17487/RFC1034, November 1987,
@@ -634,13 +746,17 @@ Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
               RFC2119, March 1997,
               <http://www.rfc-editor.org/info/rfc2119>.
 
-10.2.  Informative References
+12.2.  Informative References
 
    [I-D.ietf-dnsop-dns-terminology]
               Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", draft-ietf-dnsop-dns-terminology-05 (work in
               progress), September 2015.
 
+   [RFC5358]  Damas, J. and F. Neves, "Preventing Use of Recursive
+              Nameservers in Reflector Attacks", BCP 140, RFC 5358,
+              DOI 10.17487/RFC5358, October 2008,
+              <http://www.rfc-editor.org/info/rfc5358>.
 
 
 
@@ -664,13 +780,9 @@ Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
 
 
 
-
-
-
-
-Abley, et al.           Expires February 20, 2016              [Page 12]
+Abley, et al.            Expires March 22, 2016                [Page 14]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
 Appendix A.  Editorial Notes
@@ -724,9 +836,9 @@ A.2.1.  draft-jabley-dnsop-ordered-answers-00
 
 
 
-Abley, et al.           Expires February 20, 2016              [Page 13]
+Abley, et al.            Expires March 22, 2016                [Page 15]
 
-Internet-Draft        Minimal Answers for QTYPE=ANY          August 2015
+Internet-Draft        Minimal Answers for QTYPE=ANY       September 2015
 
 
 Authors' Addresses
@@ -780,5 +892,5 @@ Authors' Addresses
 
 
 
-Abley, et al.           Expires February 20, 2016              [Page 14]
+Abley, et al.            Expires March 22, 2016                [Page 16]
 
