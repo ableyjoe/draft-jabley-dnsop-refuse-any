@@ -292,10 +292,10 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
    authoritative servers, rather than suppress future such ANY queries
    for the same QNAME.
 
-   This proposal avoids that outcome by returning an RRSet in the
-   response to an ANY query, providing resolvers with something to cache
-   and effectively suppressing repeat queries to the same or different
-   authority servers.
+   This proposal avoids that outcome by returning a non-empty RRSet in
+   the response to an ANY query, providing resolvers with something to
+   cache and effectively suppressing repeat queries to the same or
+   different authority servers.
 
 
 

@@ -140,10 +140,10 @@
 	servers, rather than suppress future such ANY queries for
 	the same QNAME.</t>
 
-      <t>This proposal avoids that outcome by returning an RRSet
-        in the response to an ANY query, providing resolvers with
-        something to cache and effectively suppressing repeat queries
-        to the same or different authority servers.</t>
+      <t>This proposal avoids that outcome by returning a non-empty
+	RRSet in the response to an ANY query, providing resolvers
+	with something to cache and effectively suppressing repeat
+	queries to the same or different authority servers.</t>
     </section>
 
     <section title="Behaviour of DNS Responders" anchor="responder">
