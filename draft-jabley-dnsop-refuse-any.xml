@@ -149,10 +149,6 @@
 	HINFO RDATA SHOULD be set to the null string to minimise
 	the size of the response.</t>
 
-      <t>OG DISAGREES with about signing: just return unsigned HINFO, if the
-	resolver is validating it will ask for HINFO and get back a
-	proof that the HINFO does not exist. 
-
       <t>If the DNS query includes DO=1 and the QNAME corresponds
 	to a zone that is known by the responder to be signed, valid
 	RRSIG resource records MAY be returned. However, the responder
