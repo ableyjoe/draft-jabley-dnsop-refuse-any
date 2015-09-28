@@ -8,6 +8,8 @@
     'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.1035.xml'>
   <!ENTITY rfc2119 PUBLIC ''
     'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml'>
+  <!ENTITY rfc5358 PUBLIC ''
+    'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5358.xml'>
   <!ENTITY I-D.ietf-dnsop-dns-terminology PUBLIC ''
     'http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-dnsop-dns-terminology.xml'>
 ]>
@@ -54,7 +56,7 @@
       </address>
     </author>
 
-    <date day="19" month="August" year="2015"/>
+    <date day="19" month="September" year="2015"/>
 
     <abstract>
       <t>The Domain Name System (DNS) specifies a query type (QTYPE)
@@ -74,6 +76,9 @@
         System (DNS), descriptions of which can be found in
         <xref target="I-D.ietf-dnsop-dns-terminology"/>.</t>
 
+      <t>In this document, "ANY Query" refers to a DNS query with
+        QTYPE=ANY.</t>
+
       <t>In an exchange of DNS messages between two hosts, this document
         refers to the host sending a DNS request as the initiator, and
         the host sending a DNS response as the responder.</t>
@@ -91,12 +96,51 @@
     </section>
 
     <section title="Motivations">
-      <t>Describe use-cases for suppressing conventional responses to
-        QTYPE=ANY queries here.</t>
+      <t>ANY queries are legitimately used for debugging and checking
+	the state of a DNS server for a particular owner name. ANY
+	queries are sometimes used as a attempt to reduce the number
+	of queries needed to get information, e.g. to obtain MX, A
+	and AAAA RRSets for a mail domain in a single query, although
+	there is no documented guidance available for this use case
+	and some implementations have been observed that appear not
+	to function as perhaps their developers expected.</t>
+
+      <t>ANY queries are also frequently used to exploit the amplification
+        potential of DNS servers using spoofed source addresses and
+        UDP transport (see <xref target="RFC5358"/>). Having the ability
+        to return small responses to such queries makes DNS servers
+        less attractive amplifiers.</t>
+
+      <t>ANY queries are sometimes used to help mine authoritative-only
+	DNS servers for zone data, since they return all RRSets for
+	a particular owner name. A DNS server operator might prefer
+	not to send conventional ANY responses to reduce the potential
+	for such information leaks.</t>
+
+      <t>Some authoritative-only DNS server implementations require
+	additional processing in order to send a conventional
+	response to an ANY query, and avoiding that processing
+	expense may be desirable.</t>
     </section>
 
+    <section title="Impact on Recursive Resolvers"> 
+      <t>Alternative proposals for dealing with ANY queries have been
+	discussed. One approach proposed using a new RCODE to signal
+	that an authortitaive server did not answer ANY queries in
+	the standard way. This approach was found to have an
+	undesirable effect on both resolvers and authoritative-only
+	servers; resolvers receiving an unknown RCODE caused them
+	to re-send the same query to all available authoritative
+	servers, rather than suppress future such ANY queries for
+	the same QNAME.</t>
+
+      <t>This proposal avoids that outcome by returning an RRSet
+        in the response to an ANY query, providing resolvers with
+        something to cache and effectively suppressing repeat queries
+        to the same or different authority servers.</t>
+
     <section title="Behaviour of DNS Responders" anchor="responder">
-      <t>A DNS responder which receives a query with QTYPE=ANY MAY
+      <t>A DNS responder which receives an ANY query MAY
 	decline to provide a conventional response, and instead
 	send a response with a single HINFO resource record in the
 	answer section.  The CPU field of the HINFO RDATA SHOULD
@@ -105,22 +149,44 @@
 	HINFO RDATA SHOULD be set to the null string to minimise
 	the size of the response.</t>
 
+      <t>OG DISAGREES with about signing: just return unsigned HINFO, if the
+	resolver is validating it will ask for HINFO and get back a
+	proof that the HINFO does not exist. 
+
       <t>If the DNS query includes DO=1 and the QNAME corresponds
-        to a zone that is known by the responder to be signed, valid
-        RRSIG resource records should also be returned.</t>
+	to a zone that is known by the responder to be signed, valid
+	RRSIG resource records MAY be returned. However, the responder
+	MAY return an unsigned answer; a validating initiator that
+	sends a subsequent explicit query with QTYPE=HINFO will
+	receive a signed proof that the HINFO does not exist or a
+	signed HINFO RRSet, either of which can be cached to suppress
+	repeated queries.</t>
 
       <t>Except as described in this section, the DNS responder
 	MUST follow the standard algorithms when constructing a
 	response.</t>
     </section>
 
+    <section title="Behaviors of DNS resolvers"> 
+      <t>A DNS resolver that forwards an ANY query and gets back a
+	response with a single HINFO record SHOULD cache that as
+	normal record to suppress any further ANY queries from
+	clients. Performing DNSSEC valiation on this answer is
+	OPTIONAL.</t>
+    </section>
+
     <section title="Behaviour of DNS Initiators">
+	<t> OG: I think this talking both about Recursive Resovlers
+	and Stub-resolvers/clients I think we break this down into
+	diferent cases. </t>
+
       <t>A DNS initator which sends a query with QTYPE=ANY and
         receives a response containing an HINFO, as described in
-        <xref target="responder"/>, MAY cache the HINFO response
-        in the normal way. Such cached HINFO resource records should
-        be retained in the cache following normal caching semantics,
-        as would be used for any other cached response.</t>
+	<xref target="responder"/>, MAY cache the HINFO response
+	in the normal way. Such cached HINFO resource records SHOULD
+	be retained in the cache following normal caching semantics,
+	as it would with any other response received from a DNS
+	responder.</t>
 
       <t>A DNS initiator MAY suppress queries with QTYPE=ANY in the
         event that the local cache contains a matching HINFO resource
@@ -128,8 +194,18 @@
     </section>
 
     <section title="Changes to RFC 1035">
-      <t>Spell out the particular changes to 1035 implied by this
-        document.</t>
+      <t>It is important to note that returning a subset of available
+	RRSets when processing an ANY query is legitimate and
+	consistent with <xref target="RFC1035"/>; ANY does not mean
+	ALL.</t>
+
+      <t>This document describes optional behaviour for both DNS
+        initators and responders, and implementation of the guidance
+        provided by this document is OPTIONAL.</t>
+
+      <t>XXX more words here about any updates implied to RFC 1035,
+        or delete the section if it turns out that, in the final
+        analysis, there are none.</t>
     </section>
 
     <section title="Security Considerations">
@@ -164,6 +240,8 @@
     </references>
 
     <references title="Informative References">
+      &rfc5358;
+
       &I-D.ietf-dnsop-dns-terminology;
     </references>
 
