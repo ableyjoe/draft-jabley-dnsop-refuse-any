@@ -24,8 +24,8 @@
   <?rfc strict="yes" ?>
 
   <front>
-    <title abbrev="Minimal Answers for QTYPE=ANY">Providing
-      Minimal-Sized Answers to DNS Queries with QTYPE=ANY</title>
+    <title abbrev="Minimal Responses for ANY Queries">Providing
+      Minimal-Sized Responses to DNS Queries with QTYPE=ANY</title>
 
     <author initials='J.' surname="Abley" fullname='Joe Abley'>
       <organization>Dyn, Inc.</organization>
