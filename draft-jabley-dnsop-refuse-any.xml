@@ -170,14 +170,6 @@
 	response.</t>
     </section>
 
-    <section title="Behaviors of DNS resolvers"> 
-      <t>A DNS resolver that forwards an ANY query and gets back a
-	response with a single HINFO record SHOULD cache that as
-	normal record to suppress any further ANY queries from
-	clients. Performing DNSSEC valiation on this answer is
-	OPTIONAL.</t>
-    </section>
-
     <section title="Behaviour of DNS Initiators">
       <t>XXX consider whether separate text here is required depending
         on whether the initiator is a non-caching stub resolver or
