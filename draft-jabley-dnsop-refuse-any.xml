@@ -77,7 +77,7 @@
         <xref target="I-D.ietf-dnsop-dns-terminology"/>.</t>
 
       <t>In this document, "ANY Query" refers to a DNS query with
-        QTYPE=ANY.</t>
+        QTYPE=ANY. An "ANY Response" is a response to such a query.</t>
 
       <t>In an exchange of DNS messages between two hosts, this document
         refers to the host sending a DNS request as the initiator, and
@@ -119,17 +119,23 @@
 
       <t>ANY queries are sometimes used to help mine authoritative-only
 	DNS servers for zone data, since they return all RRSets for
-	a particular owner name. A DNS server operator might prefer
+	a particular owner name. A DNS zone maintainer might prefer
 	not to send conventional ANY responses to reduce the potential
 	for such information leaks.</t>
 
       <t>Some authoritative-only DNS server implementations require
 	additional processing in order to send a conventional
-	response to an ANY query, and avoiding that processing
+	ANY response, and avoiding that processing
 	expense may be desirable.</t>
     </section>
 
-    <section title="Impact on Recursive Resolvers"> 
+    <section title="General Approach"> 
+      <t>This proposal provides a mechanism for an authority server
+	to signal that conventional ANY queries are not supported
+	for a particular QNAME, and to do so in such a way that
+	is both compatible with and triggers desirable behaviour by
+        unmodified clients (e.g. DNS resolvers).</t>
+
       <t>Alternative proposals for dealing with ANY queries have been
 	discussed. One approach proposed using a new RCODE to signal
 	that an authortitaive server did not answer ANY queries in
@@ -141,20 +147,38 @@
 	the same QNAME.</t>
 
       <t>This proposal avoids that outcome by returning a non-empty
-	RRSet in the response to an ANY query, providing resolvers
+	RRSet in the ANY response, providing resolvers
 	with something to cache and effectively suppressing repeat
 	queries to the same or different authority servers.</t>
+
+      <t>This proposal makes use of the HINFO RRType rather than
+        specifying a new RRType. This is intended both to facilitate
+        desired behaviour by initators who might otherwise struggle
+        to deal correctly with new RRTypes, but also because in
+        a general sense the signalling from responder to initiator
+        is providing some information about the responding host,
+        which seems in keeping with the originally-imagined use of
+        HINFO. See also <xref target="hinfo"/>.</t>
     </section>
 
     <section title="Behaviour of DNS Responders" anchor="responder">
       <t>A DNS responder which receives an ANY query MAY
 	decline to provide a conventional response, and instead
 	send a response with a single HINFO resource record in the
-	answer section.  The CPU field of the HINFO RDATA SHOULD
+	answer section. The CPU field of the HINFO RDATA SHOULD
 	be set to RFCXXXX [note to RFC Editor, replace with RFC
 	number assigned to this document].  The OS field of the
 	HINFO RDATA SHOULD be set to the null string to minimise
 	the size of the response.</t>
+
+      <t>The TTL encoded for the HINFO RR SHOULD be chosen by the
+        operator of the DNS responder to be large enough to suppress
+        frequent subsequent ANY queries from the same initiator with
+        the same QNAME, understanding that a TTL that is too long
+        might make policy changes relating to ANY queries difficult
+        to change in the future. The specific value used is hence
+        a familiar balance when choosing TTLs for any RR in any zone,
+        and should be specified according to local policy.</t>
 
       <t>If the DNS query includes DO=1 and the QNAME corresponds
 	to a zone that is known by the responder to be signed, valid
@@ -186,6 +210,25 @@
       <t>A DNS initiator MAY suppress queries with QTYPE=ANY in the
         event that the local cache contains a matching HINFO resource
         record with RDATA.CPU as described in <xref target="responder"/>.</t>
+    </section>
+
+    <section title="HINFO Considerations">
+      <t>In the case where a zone that contains HINFO RRSets is
+	served from an authority server that does not provide
+	conventional ANY responses, it is possible that the HINFO
+	RRSet in an ANY response, once cached by the initiator,
+	might suppress subsequent queries from the same initiator
+	with QTYPE=HINFO. The use of HINFO in this proposal would
+	hence have effectively masked the HINFO RRSet present in
+	the zone.</t>
+
+      <t>Authority-server operators who serve zones that rely upon
+	conventional use of the HINFO RRType might sensibly choose
+	not to deploy the mechanism described in this document.</t>
+
+      <t>The HINFO RRType is believed to be rarely used in the DNS
+	at the time of writing, based on observations made both at
+	recursive servers and authority servers.</t>
     </section>
 
     <section title="Changes to RFC 1035">
