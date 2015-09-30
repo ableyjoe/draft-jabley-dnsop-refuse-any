@@ -212,7 +212,7 @@
         record with RDATA.CPU as described in <xref target="responder"/>.</t>
     </section>
 
-    <section title="HINFO Considerations">
+    <section title="HINFO Considerations" anchor="hinfo">
       <t>In the case where a zone that contains HINFO RRSets is
 	served from an authority server that does not provide
 	conventional ANY responses, it is possible that the HINFO
