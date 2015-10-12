@@ -289,8 +289,10 @@
 
       <section title="Change History">
 	<section title="draft-jabley-dnsop-refuse-any-01"> 
-	  <t> Makes signing of HINFO records for answers from signed
-	  zones mandatory. </t>
+	  <t>Make signing of HINFO records for answers from signed
+	    zones mandatory.</t>
+        </section>
+
         <section title="draft-jabley-dnsop-refuse-any-00">
           <t>Initial draft circulated for comment.</t>
         </section>

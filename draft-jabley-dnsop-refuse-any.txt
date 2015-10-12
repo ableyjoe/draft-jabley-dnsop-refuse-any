@@ -83,9 +83,9 @@ Table of Contents
    Appendix A.  Editorial Notes . . . . . . . . . . . . . . . . . . . 15
      A.1.   Venue . . . . . . . . . . . . . . . . . . . . . . . . . . 15
      A.2.   Change History  . . . . . . . . . . . . . . . . . . . . . 15
-       A.2.1.  draft-jabley-dnsop-ordered-answers-00  . . . . . . . . 15
+       A.2.1.  draft-jabley-dnsop-refuse-any-01 . . . . . . . . . . . 15
+       A.2.2.  draft-jabley-dnsop-refuse-any-00 . . . . . . . . . . . 15
    Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 16
-
 
 
 
@@ -358,14 +358,14 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
    If the DNS query includes DO=1 and the QNAME corresponds to a zone
    that is known by the responder to be signed, valid RRSIG resource
-   records MAY be returned.  However, the responder MAY return an
-   unsigned answer; a validating initiator that sends a subsequent
-   explicit query with QTYPE=HINFO will receive a signed proof that the
-   HINFO does not exist or a signed HINFO RRSet, either of which can be
-   cached to suppress repeated queries.
+   records MUST be returned.
 
    Except as described in this section, the DNS responder MUST follow
    the standard algorithms when constructing a response.
+
+
+
+
 
 
 
@@ -408,7 +408,7 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
    A DNS initiator MAY suppress queries with QTYPE=ANY in the event that
    the local cache contains a matching HINFO resource record with
-   RDATA.CPU as described in Section 5.
+   RDATA.CPU field, as described in Section 5.
 
 
 
@@ -515,9 +515,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
    responders, and implementation of the guidance provided by this
    document is OPTIONAL.
 
-   XXX more words here about any updates implied to RFC 1035, or delete
-   the section if it turns out that, in the final analysis, there are
-   none.
+
+
+
 
 
 
@@ -675,7 +675,7 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 11.  Acknowledgements
 
-   Your name here, etc.
+   Evan Hunt provided valuable observations.
 
 
 
@@ -796,14 +796,14 @@ A.1.  Venue
 
 A.2.  Change History
 
-A.2.1.  draft-jabley-dnsop-ordered-answers-00
+A.2.1.  draft-jabley-dnsop-refuse-any-01
+
+   Make signing of HINFO records for answers from signed zones
+   mandatory.
+
+A.2.2.  draft-jabley-dnsop-refuse-any-00
 
    Initial draft circulated for comment.
-
-
-
-
-
 
 
 
