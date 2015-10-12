@@ -10,7 +10,7 @@ Expires: April 2, 2016                                   CloudFlare Inc.
 
 
     Providing Minimal-Sized Responses to DNS Queries with QTYPE=ANY
-                    draft-jabley-dnsop-refuse-any-00
+                    draft-jabley-dnsop-refuse-any-01
 
 Abstract
 
@@ -303,18 +303,18 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
    effectively suppressing repeat queries to the same or different
    authority servers.
 
-   This proposal makes use of the HINFO RRType rather than specifying a
-   new RRType.  This is intended both to facilitate desired behaviour by
-   initators who might otherwise struggle to deal correctly with new
-   RRTypes, but also because in a general sense the signalling from
-   responder to initiator is providing some information about the
-   responding host, which seems in keeping with the originally-imagined
-   use of HINFO.  See also Section 7.
+   This proposal specifies two different modes of behaviour by DNS
+   responders, and operators are free to choose whichever mechanism best
+   suits their environment.
 
+   1.  A DNS responder may choose to search for an owner name that
+       matches the QNAME and, if that name owns multiple RRs, return
+       just one of them.
 
-
-
-
+   2.  A DNS responder for whom a search for an owner name with an
+       existing resource record is expensive may instead synthesise an
+       HINFO resource record and return that instead.  See Section 7 for
+       discussion of the use of HINFO.
 
 
 
@@ -341,15 +341,23 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
    A DNS responder which receives an ANY query MAY decline to provide a
    conventional response, and instead send a response with a single
-   HINFO resource record in the answer section.  The CPU field of the
-   HINFO RDATA SHOULD be set to RFCXXXX [note to RFC Editor, replace
-   with RFC number assigned to this document].  The OS field of the
-   HINFO RDATA SHOULD be set to the null string to minimise the size of
-   the response.
+   RRSet in the answer section.
 
-   The TTL encoded for the HINFO RR SHOULD be chosen by the operator of
-   the DNS responder to be large enough to suppress frequent subsequent
-   ANY queries from the same initiator with the same QNAME,
+   The resource record returned in the response MAY be a single RRSet
+   owned by the name specified in the QNAME.  Where mulitple RRSets
+   exist, the responder MAY choose a small one to reduce its
+   amplification potential.
+
+   The resource record returned in the response MAY also be synthesised,
+   in which case a single HINFO resource record should be returned.  The
+   CPU field of the HINFO RDATA SHOULD be set to RFCXXXX [note to RFC
+   Editor, replace with RFC number assigned to this document].  The OS
+   field of the HINFO RDATA SHOULD be set to the null string to minimise
+   the size of the response.
+
+   The TTL encoded for a synthesised RR SHOULD be chosen by the operator
+   of the DNS responder to be large enough to suppress frequent
+   subsequent ANY queries from the same initiator with the same QNAME,
    understanding that a TTL that is too long might make policy changes
    relating to ANY queries difficult to change in the future.  The
    specific value used is hence a familiar balance when choosing TTLs
@@ -357,19 +365,11 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
    policy.
 
    If the DNS query includes DO=1 and the QNAME corresponds to a zone
-   that is known by the responder to be signed, valid RRSIG resource
-   records MUST be returned.
+   that is known by the responder to be signed, a valid RRSIG for the
+   HINFO RRSet MUST be returned.
 
    Except as described in this section, the DNS responder MUST follow
    the standard algorithms when constructing a response.
-
-
-
-
-
-
-
-
 
 
 
