@@ -182,16 +182,13 @@
 
       <t>If the DNS query includes DO=1 and the QNAME corresponds
 	to a zone that is known by the responder to be signed, valid
-	RRSIG resource records MAY be returned. However, the responder
-	MAY return an unsigned answer; a validating initiator that
-	sends a subsequent explicit query with QTYPE=HINFO will
-	receive a signed proof that the HINFO does not exist or a
-	signed HINFO RRSet, either of which can be cached to suppress
-	repeated queries.</t>
+	RRSIG resource records MUST be returned.
+      </t>
 
       <t>Except as described in this section, the DNS responder
 	MUST follow the standard algorithms when constructing a
-	response.</t>
+	response.
+      </t>
     </section>
 
     <section title="Behaviour of DNS Initiators">
@@ -209,7 +206,7 @@
 
       <t>A DNS initiator MAY suppress queries with QTYPE=ANY in the
         event that the local cache contains a matching HINFO resource
-        record with RDATA.CPU as described in <xref target="responder"/>.</t>
+        record with RDATA.CPU field, as described in <xref target="responder"/>.</t>
     </section>
 
     <section title="HINFO Considerations" anchor="hinfo">
@@ -228,7 +225,8 @@
 
       <t>The HINFO RRType is believed to be rarely used in the DNS
 	at the time of writing, based on observations made both at
-	recursive servers and authority servers.</t>
+	recursive servers and authority servers.
+      </t>
     </section>
 
     <section title="Changes to RFC 1035">
@@ -241,9 +239,6 @@
         initators and responders, and implementation of the guidance
         provided by this document is OPTIONAL.</t>
 
-      <t>XXX more words here about any updates implied to RFC 1035,
-        or delete the section if it turns out that, in the final
-        analysis, there are none.</t>
     </section>
 
     <section title="Security Considerations">
@@ -266,7 +261,7 @@
     </section>
 
     <section title="Acknowledgements">
-      <t>Your name here, etc.</t>
+      <t>Evan Hunt provided valuable observations.</t>
     </section>
   </middle>
 
@@ -293,7 +288,10 @@
       </section>
 
       <section title="Change History">
-        <section title="draft-jabley-dnsop-ordered-answers-00">
+	<section title="draft-jabley-dnsop-refuse-any-01"> 
+	  <t> Makes signing of HINFO records for answers from signed
+	  zones mandatory. </t>
+        <section title="draft-jabley-dnsop-refuse-any-00">
           <t>Initial draft circulated for comment.</t>
         </section>
       </section>
