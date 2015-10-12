@@ -303,8 +303,11 @@
 
       <section title="Change History">
 	<section title="draft-jabley-dnsop-refuse-any-01"> 
-	  <t>Make signing of HINFO records for answers from signed
+	  <t>Make signing of RRSets in answers from signed
 	    zones mandatory.</t>
+
+          <t>Document the option of returning an existing RRSet
+            in place of a synthesised one.</t>
         </section>
 
         <section title="draft-jabley-dnsop-refuse-any-00">

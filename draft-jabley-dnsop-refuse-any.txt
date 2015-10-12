@@ -798,14 +798,14 @@ A.2.  Change History
 
 A.2.1.  draft-jabley-dnsop-refuse-any-01
 
-   Make signing of HINFO records for answers from signed zones
-   mandatory.
+   Make signing of RRSets in answers from signed zones mandatory.
+
+   Document the option of returning an existing RRSet in place of a
+   synthesised one.
 
 A.2.2.  draft-jabley-dnsop-refuse-any-00
 
    Initial draft circulated for comment.
-
-
 
 
 
