@@ -120,7 +120,7 @@
       <t>ANY queries are sometimes used to help mine authoritative-only
 	DNS servers for zone data, since they return all RRSets for
 	a particular owner name. A DNS zone maintainer might prefer
-	not to send conventional ANY responses to reduce the potential
+	not to send full ANY responses to reduce the potential
 	for such information leaks.</t>
 
       <t>Some authoritative-only DNS server implementations require
@@ -170,19 +170,20 @@
 
     <section title="Behaviour of DNS Responders" anchor="responder">
       <t>A DNS responder which receives an ANY query MAY decline
-	to provide a conventional response, and instead send a
+	to provide a conventional response, and MAY instead send a
 	response with a single RRSet in the answer section.</t>
 
-      <t>The resource record returned in the response MAY be a
-	single RRSet owned by the name specified in the QNAME. Where
-	mulitple RRSets exist, the responder MAY choose a small one
-	to reduce its amplification potential.</t>
+      <t>The RRSet returned in the answer section of the response
+	MAY be a single RRSet owned by the name specified in the
+	QNAME. Where mulitple RRSets exist, the responder MAY choose
+	a small one to reduce its amplification potential.</t>
 
-      <t>The resource record returned in the response MAY also be
-        synthesised, in which case a single HINFO resource record
-	should be returned.  The CPU field of the HINFO RDATA SHOULD
-	be set to RFCXXXX [note to RFC Editor, replace with RFC
-	number assigned to this document].  The OS field of the
+      <t>If there is no CNAME present at the owner name matching
+	the QNAME, the resource record returned in the response MAY
+	instead synthesised, in which case a single HINFO resource
+	record should be returned.  The CPU field of the HINFO RDATA
+	SHOULD be set to RFCXXXX [note to RFC Editor, replace with
+	RFC number assigned to this document].  The OS field of the
 	HINFO RDATA SHOULD be set to the null string to minimise
 	the size of the response.</t>
 
@@ -197,7 +198,7 @@
 
       <t>If the DNS query includes DO=1 and the QNAME corresponds
 	to a zone that is known by the responder to be signed, a valid
-	RRSIG for the HINFO RRSet MUST be returned.</t>
+	RRSIG for the RRSets in the answer section MUST be returned.</t>
 
       <t>Except as described in this section, the DNS responder
 	MUST follow the standard algorithms when constructing a
@@ -275,7 +276,7 @@
     </section>
 
     <section title="Acknowledgements">
-      <t>Evan Hunt provided valuable observations.</t>
+      <t>Evan Hunt and David Lawrence provided valuable observations.</t>
     </section>
   </middle>
 
