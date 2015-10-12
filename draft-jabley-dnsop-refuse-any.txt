@@ -5,8 +5,8 @@ Network Working Group                                           J. Abley
 Internet-Draft                                                 Dyn, Inc.
 Updates: 1035 (if approved)                               O. Gudmundsson
 Intended status: Standards Track                            M. Majkowski
-Expires: April 2, 2016                                   CloudFlare Inc.
-                                                      September 30, 2015
+Expires: April 14, 2016                                  CloudFlare Inc.
+                                                        October 12, 2015
 
 
     Providing Minimal-Sized Responses to DNS Queries with QTYPE=ANY
@@ -38,7 +38,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 2, 2016.
+   This Internet-Draft will expire on April 14, 2016.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Abley, et al.             Expires April 2, 2016                 [Page 1]
+Abley, et al.            Expires April 14, 2016                 [Page 1]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
    carefully, as they describe your rights and restrictions with respect
@@ -108,9 +108,9 @@ Table of Contents
 
 
 
-Abley, et al.             Expires April 2, 2016                 [Page 2]
+Abley, et al.            Expires April 14, 2016                 [Page 2]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 1.  Terminology
@@ -164,9 +164,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 
 
-Abley, et al.             Expires April 2, 2016                 [Page 3]
+Abley, et al.            Expires April 14, 2016                 [Page 3]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 2.  Introduction
@@ -220,9 +220,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 
 
-Abley, et al.             Expires April 2, 2016                 [Page 4]
+Abley, et al.            Expires April 14, 2016                 [Page 4]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 3.  Motivations
@@ -276,9 +276,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 
 
-Abley, et al.             Expires April 2, 2016                 [Page 5]
+Abley, et al.            Expires April 14, 2016                 [Page 5]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 4.  General Approach
@@ -332,9 +332,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 
 
-Abley, et al.             Expires April 2, 2016                 [Page 6]
+Abley, et al.            Expires April 14, 2016                 [Page 6]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 5.  Behaviour of DNS Responders
@@ -388,9 +388,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 
 
-Abley, et al.             Expires April 2, 2016                 [Page 7]
+Abley, et al.            Expires April 14, 2016                 [Page 7]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 6.  Behaviour of DNS Initiators
@@ -444,9 +444,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 
 
-Abley, et al.             Expires April 2, 2016                 [Page 8]
+Abley, et al.            Expires April 14, 2016                 [Page 8]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 7.  HINFO Considerations
@@ -500,9 +500,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 
 
-Abley, et al.             Expires April 2, 2016                 [Page 9]
+Abley, et al.            Expires April 14, 2016                 [Page 9]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 8.  Changes to RFC 1035
@@ -556,9 +556,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 
 
-Abley, et al.             Expires April 2, 2016                [Page 10]
+Abley, et al.            Expires April 14, 2016                [Page 10]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 9.  Security Considerations
@@ -612,9 +612,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 
 
-Abley, et al.             Expires April 2, 2016                [Page 11]
+Abley, et al.            Expires April 14, 2016                [Page 11]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 10.  IANA Considerations
@@ -668,9 +668,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 
 
-Abley, et al.             Expires April 2, 2016                [Page 12]
+Abley, et al.            Expires April 14, 2016                [Page 12]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 11.  Acknowledgements
@@ -724,9 +724,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 
 
-Abley, et al.             Expires April 2, 2016                [Page 13]
+Abley, et al.            Expires April 14, 2016                [Page 13]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 12.  References
@@ -780,9 +780,9 @@ Internet-Draft      Minimal Responses for ANY Queries     September 2015
 
 
 
-Abley, et al.             Expires April 2, 2016                [Page 14]
+Abley, et al.            Expires April 14, 2016                [Page 14]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 Appendix A.  Editorial Notes
@@ -836,9 +836,9 @@ A.2.2.  draft-jabley-dnsop-refuse-any-00
 
 
 
-Abley, et al.             Expires April 2, 2016                [Page 15]
+Abley, et al.            Expires April 14, 2016                [Page 15]
 
-Internet-Draft      Minimal Responses for ANY Queries     September 2015
+Internet-Draft      Minimal Responses for ANY Queries       October 2015
 
 
 Authors' Addresses
@@ -892,5 +892,5 @@ Authors' Addresses
 
 
 
-Abley, et al.             Expires April 2, 2016                [Page 16]
+Abley, et al.            Expires April 14, 2016                [Page 16]
 
