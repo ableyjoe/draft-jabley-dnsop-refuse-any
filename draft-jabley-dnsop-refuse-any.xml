@@ -158,7 +158,7 @@
         <list style="numbers">
           <t>A DNS responder may choose to search for an owner
             name that matches the QNAME and, if that name owns
-            multiple RRs, return just one of them.</t>
+            multiple RRSets, return just one of them.</t>
 
           <t>A DNS responder for whom a search for an owner name
 	    with an existing resource record is expensive may instead
@@ -175,7 +175,7 @@
 
       <t>The RRSet returned in the answer section of the response
 	MAY be a single RRSet owned by the name specified in the
-	QNAME. Where mulitple RRSets exist, the responder MAY choose
+	QNAME. Where multiple RRSets exist, the responder MAY choose
 	a small one to reduce its amplification potential.</t>
 
       <t>If there is no CNAME present at the owner name matching
