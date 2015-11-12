@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+  <!ENTITY rfc1034 PUBLIC ''
+    'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.1034.xml'>
+  <!ENTITY rfc1035 PUBLIC ''
+    'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.1035.xml'>
+  <!ENTITY rfc2119 PUBLIC ''
+    'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml'>
+  <!ENTITY rfc5358 PUBLIC ''
+    'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5358.xml'>
+  <!ENTITY rfc6895 PUBLIC ''
+    'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6895.xml'>
+  <!ENTITY I-D.ietf-dnsop-dns-terminology PUBLIC ''
+    'http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-dnsop-dns-terminology.xml'>
+]>
+
+<rfc category="std" ipr="trust200902" updates="1035"
+  docName="draft-ietf-dnsop-refuse-any-00">
+
+  <?rfc toc="yes" ?>
+  <?rfc symrefs="yes" ?>
+  <?rfc sortrefs="yes"?>
+  <?rfc iprnotified="no" ?>
+  <?rfc strict="yes" ?>
+
+  <front>
+    <title abbrev="Minimal Responses for ANY Queries">Providing
+      Minimal-Sized Responses to DNS Queries with QTYPE=ANY</title>
+
+    <author initials='J.' surname="Abley" fullname='Joe Abley'>
+      <organization>Dyn, Inc.</organization>
+      <address>
+        <postal>
+          <street>103-186 Albert Street</street>
+          <city>London</city>
+          <region>ON</region>
+          <code>N6A 1M1</code>
+          <country>Canada</country>
+        </postal>
+        <phone>+1 519 670 9327</phone>
+        <email>jabley@dyn.com</email>
+      </address>
+    </author>
+
+    <author initials="O." surname="Gudmundsson" fullname="Olafur Gudmundsson">
+      <organization>CloudFlare Inc.</organization>
+      <address>
+        <email>olafur@cloudflare.com</email>
+      </address>
+    </author>
+
+    <author initials="M." surname="Majkowski" fullname="Marek Majkowski">
+      <organization>CloudFlare Inc.</organization>
+      <address>
+        <email>marek@cloudflare.com</email>
+      </address>
+    </author>
+
+    <date day="5" month="November" year="2015"/>
+
+    <abstract>
+      <t>The Domain Name System (DNS) specifies a query type (QTYPE)
+        "ANY". The operator of an authoritative DNS server might choose
+        not to respond to such queries for reasons of local policy,
+        motivated by security, performance or other reasons.</t>
+
+      <t>The DNS specification does not include specific guidance
+	for the behaviour of DNS servers or clients in this situation.
+        This document aims to provide such guidance.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Terminology">
+      <t>This document uses terminology specific to the Domain Name
+        System (DNS), descriptions of which can be found in
+        <xref target="I-D.ietf-dnsop-dns-terminology"/>.</t>
+
+      <t>In this document, "ANY Query" refers to a DNS query with
+        QTYPE=ANY. An "ANY Response" is a response to such a query.</t>
+
+      <t>In an exchange of DNS messages between two hosts, this document
+        refers to the host sending a DNS request as the initiator, and
+        the host sending a DNS response as the responder.</t>
+
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+        "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY"
+        and "OPTIONAL" in this document are to be interpreted as
+        described in <xref target="RFC2119"/>.</t>
+    </section>
+
+    <section title="Introduction">
+      <t>The Domain Name System (DNS) specifies a query type (QTYPE)
+        "ANY". The operator of an authoritative DNS server might choose
+        not to respond to such queries for reasons of local policy,
+        motivated by security, performance or other reasons.</t>
+
+      <t>The DNS specification <xref target="RFC1034"/> <xref
+        target="RFC1035"/> does not include specific guidance
+	for the behaviour of DNS servers or clients in this situation.
+	This document aims to provide such guidance.</t>
+    </section>
+
+    <section title="Motivations">
+      <t>ANY queries are legitimately used for debugging and checking
+	the state of a DNS server for a particular owner name. ANY
+	queries are sometimes used as a attempt to reduce the number
+	of queries needed to get information, e.g. to obtain MX, A
+	and AAAA RRSets for a mail domain in a single query, although
+	there is no documented guidance available for this use case
+	and some implementations have been observed that appear not
+	to function as perhaps their developers expected.</t>
+
+      <t>ANY queries are also frequently used to exploit the amplification
+        potential of DNS servers using spoofed source addresses and
+        UDP transport (see <xref target="RFC5358"/>). Having the ability
+        to return small responses to such queries makes DNS servers
+        less attractive amplifiers.</t>
+
+      <t>ANY queries are sometimes used to help mine authoritative-only
+	DNS servers for zone data, since they return all RRSets for
+	a particular owner name. A DNS zone maintainer might prefer
+	not to send full ANY responses to reduce the potential
+	for such information leaks.</t>
+
+      <t>Some authoritative-only DNS server implementations require
+	additional processing in order to send a conventional
+	ANY response, and avoiding that processing
+	expense may be desirable.</t>
+    </section>
+
+    <section title="General Approach"> 
+      <t>This proposal provides a mechanism for an authority server
+	to signal that conventional ANY queries are not supported
+	for a particular QNAME, and to do so in such a way that
+	is both compatible with and triggers desirable behaviour by
+        unmodified clients (e.g. DNS resolvers).</t>
+
+      <t>Alternative proposals for dealing with ANY queries have been
+	discussed. One approach proposed using a new RCODE to signal
+	that an authortitaive server did not answer ANY queries in
+	the standard way. This approach was found to have an
+	undesirable effect on both resolvers and authoritative-only
+	servers; resolvers receiving an unknown RCODE caused them
+	to re-send the same query to all available authoritative
+	servers, rather than suppress future such ANY queries for
+	the same QNAME.</t>
+
+      <t>This proposal avoids that outcome by returning a non-empty
+	RRSet in the ANY response, providing resolvers
+	with something to cache and effectively suppressing repeat
+	queries to the same or different authority servers.</t>
+
+      <t>This proposal specifies two different modes of behaviour
+        by DNS responders, and operators are free to choose
+        whichever mechanism best suits their environment.
+
+        <list style="numbers">
+          <t>A DNS responder may choose to search for an owner
+            name that matches the QNAME and, if that name owns
+            multiple RRSets, return just one of them.</t>
+
+          <t>A DNS responder for whom a search for an owner name
+	    with an existing resource record is expensive may instead
+	    synthesise an HINFO resource record and return that
+	    instead. See <xref target="hinfo"/> for discussion of the
+            use of HINFO.</t>
+        </list></t>
+    </section>
+
+    <section title="Behaviour of DNS Responders" anchor="responder">
+      <t>A DNS responder which receives an ANY query MAY decline
+	to provide a conventional response, and MAY instead send a
+	response with a single RRSet in the answer section.</t>
+
+      <t>The RRSet returned in the answer section of the response
+	MAY be a single RRSet owned by the name specified in the
+	QNAME. Where multiple RRSets exist, the responder MAY choose
+	a small one to reduce its amplification potential.</t>
+
+      <t>If there is no CNAME present at the owner name matching
+	the QNAME, the resource record returned in the response MAY
+	instead synthesised, in which case a single HINFO resource
+	record should be returned.  The CPU field of the HINFO RDATA
+	SHOULD be set to RFCXXXX [note to RFC Editor, replace with
+	RFC number assigned to this document].  The OS field of the
+	HINFO RDATA SHOULD be set to the null string to minimise
+	the size of the response.</t>
+
+      <t>The TTL encoded for a synthesised RR SHOULD be chosen by the
+        operator of the DNS responder to be large enough to suppress
+        frequent subsequent ANY queries from the same initiator with
+        the same QNAME, understanding that a TTL that is too long
+        might make policy changes relating to ANY queries difficult
+        to change in the future. The specific value used is hence
+        a familiar balance when choosing TTLs for any RR in any zone,
+        and should be specified according to local policy.</t>
+
+      <t>If the DNS query includes DO=1 and the QNAME corresponds
+	to a zone that is known by the responder to be signed, a valid
+	RRSIG for the RRSets in the answer section MUST be returned.</t>
+
+      <t>Except as described in this section, the DNS responder
+	MUST follow the standard algorithms when constructing a
+	response.</t>
+    </section>
+
+    <section title="Behaviour of DNS Initiators">
+      <t>XXX consider whether separate text here is required depending
+        on whether the initiator is a non-caching stub resolver or
+        a caching recursive resolver.</t>
+
+      <t>A DNS initator which sends a query with QTYPE=ANY and
+        receives a response containing an HINFO, as described in
+	<xref target="responder"/>, MAY cache the HINFO response
+	in the normal way. Such cached HINFO resource records SHOULD
+	be retained in the cache following normal caching semantics,
+	as it would with any other response received from a DNS
+	responder.</t>
+
+      <t>A DNS initiator MAY suppress queries with QTYPE=ANY in the
+	event that the local cache contains a matching HINFO resource
+	record with RDATA.CPU field, as described in <xref
+	target="responder"/>.</t>
+    </section>
+
+    <section title="HINFO Considerations" anchor="hinfo">
+      <t>In the case where a zone that contains HINFO RRSets is
+	served from an authority server that does not provide
+	conventional ANY responses, it is possible that the HINFO
+	RRSet in an ANY response, once cached by the initiator,
+	might suppress subsequent queries from the same initiator
+	with QTYPE=HINFO. The use of HINFO in this proposal would
+	hence have effectively masked the HINFO RRSet present in
+	the zone.</t>
+
+      <t>Authority-server operators who serve zones that rely upon
+	conventional use of the HINFO RRType might sensibly choose
+	not to deploy the mechanism described in this document.</t>
+
+      <t>The HINFO RRType is believed to be rarely used in the DNS
+	at the time of writing, based on observations made both at
+	recursive servers and authority servers.
+      </t>
+    </section>
+
+    <section title="Changes to RFC 1035">
+      <t>It is important to note that returning a subset of available
+	RRSets when processing an ANY query is legitimate and
+	consistent with <xref target="RFC1035"/>; ANY does not mean
+	ALL.</t>
+
+      <t>This document describes optional behaviour for both DNS
+        initators and responders, and implementation of the guidance
+        provided by this document is OPTIONAL.</t>
+
+    </section>
+
+    <section title="Security Considerations">
+      <t>Queries with QTYPE=ANY are frequently observed as part of
+	reflection attacks, since a relatively small query can be
+	used to elicit a large response; this is a desirable
+	characteristic if the goal is to maximise the amplification
+	potential of a DNS server as part of a volumetric attack.
+	The ability of a DNS operator to suppress such responses
+	on a particular server makes that server a less useful
+	amplifier.</t>
+
+      <t>The optional behaviour described in this document to reduce
+        the size of responses to queries with QTYPE=ANY is compatible
+        with the use of DNSSEC by both initiator and responder.</t>
+    </section>
+
+    <section title="IANA Considerations">
+      <t>The IANA is requested to update the <eref
+        target="http://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-4">Resource
+        Record (RR) TYPEs Registry</eref> entry as follows:</t>
+
+      <texttable>
+        <ttcol>Type</ttcol>
+        <ttcol>Value</ttcol>
+        <ttcol>Meaning</ttcol>
+        <ttcol>Reference</ttcol>
+
+        <c>*</c>
+        <c>255</c>
+        <c>A request for some or all records the server has available</c>
+        <c><xref target="RFC1035"/><xref target="RFC6895"/>
+          [This Document]</c>
+      </texttable>
+    </section>
+
+    <section title="Acknowledgements">
+      <t>Evan Hunt and David Lawrence provided valuable observations.</t>
+    </section>
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      &rfc1034;
+      &rfc1035;
+      &rfc2119;
+    </references>
+
+    <references title="Informative References">
+      &rfc5358;
+      &rfc6895;
+
+      &I-D.ietf-dnsop-dns-terminology;
+    </references>
+
+    <section title="Editorial Notes">
+      <t>This section (and sub-sections) to be removed prior to
+        publication.</t>
+
+      <section title="Venue">
+        <t>An appropriate forum for discussion of this draft is
+          the dnsop working group.</t>
+      </section>
+
+      <section title="Change History">
+        <section title="draft-ietf-dnsop-refuse-any-01">
+          <t>Add IANA Considerations</t>
+        </section>
+
+        <section title="draft-ietf-dnsop-refuse-any-00">
+          <t>Re-submitted with a different name following adoption
+            at the dnsop wg meeting convened at IETF 94.</t>
+        </section>
+
+	<section title="draft-jabley-dnsop-refuse-any-01"> 
+	  <t>Make signing of RRSets in answers from signed
+	    zones mandatory.</t>
+
+          <t>Document the option of returning an existing RRSet
+            in place of a synthesised one.</t>
+        </section>
+
+        <section title="draft-jabley-dnsop-refuse-any-00">
+          <t>Initial draft circulated for comment.</t>
+        </section>
+      </section>
+    </section>
+  </back>
+</rfc>
+
