@@ -17,7 +17,7 @@
 ]>
 
 <rfc category="std" ipr="trust200902" updates="1035"
-  docName="draft-ietf-dnsop-refuse-any-00">
+  docName="draft-ietf-dnsop-refuse-any-01">
 
   <?rfc toc="yes" ?>
   <?rfc symrefs="yes" ?>
@@ -58,7 +58,7 @@
       </address>
     </author>
 
-    <date day="5" month="November" year="2015"/>
+    <date day="11" month="November" year="2015"/>
 
     <abstract>
       <t>The Domain Name System (DNS) specifies a query type (QTYPE)
