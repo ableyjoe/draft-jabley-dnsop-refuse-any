@@ -1,6 +1,7 @@
 
 
 
+
 Network Working Group                                           J. Abley
 Internet-Draft                                                 Dyn, Inc.
 Updates: 1035 (if approved)                               O. Gudmundsson
@@ -10,7 +11,7 @@ Expires: May 14, 2016                                    CloudFlare Inc.
 
 
     Providing Minimal-Sized Responses to DNS Queries with QTYPE=ANY
-                     draft-ietf-dnsop-refuse-any-01
+                   draft-ietf-dnsop-refuse-any-02pre
 
 Abstract
 
@@ -23,7 +24,7 @@ Abstract
    behaviour of DNS servers or clients in this situation.  This document
    aims to provide such guidance.
 
-Status of this Memo
+Status of This Memo
 
    This Internet-Draft is submitted in full conformance with the
    provisions of BCP 78 and BCP 79.
@@ -63,55 +64,32 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    the Trust Legal Provisions and are provided without warranty as
    described in the Simplified BSD License.
 
-
 Table of Contents
 
-   1.  Terminology  . . . . . . . . . . . . . . . . . . . . . . . . .  3
-   2.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  4
-   3.  Motivations  . . . . . . . . . . . . . . . . . . . . . . . . .  5
-   4.  General Approach . . . . . . . . . . . . . . . . . . . . . . .  6
-   5.  Behaviour of DNS Responders  . . . . . . . . . . . . . . . . .  7
-   6.  Behaviour of DNS Initiators  . . . . . . . . . . . . . . . . .  8
-   7.  HINFO Considerations . . . . . . . . . . . . . . . . . . . . .  9
-   8.  Changes to RFC 1035  . . . . . . . . . . . . . . . . . . . . . 10
-   9.  Security Considerations  . . . . . . . . . . . . . . . . . . . 11
-   10. IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 12
-   11. Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 13
-   12. References . . . . . . . . . . . . . . . . . . . . . . . . . . 14
-     12.1.  Normative References  . . . . . . . . . . . . . . . . . . 14
-     12.2.  Informative References  . . . . . . . . . . . . . . . . . 14
-   Appendix A.  Editorial Notes . . . . . . . . . . . . . . . . . . . 15
-     A.1.   Venue . . . . . . . . . . . . . . . . . . . . . . . . . . 15
-     A.2.   Change History  . . . . . . . . . . . . . . . . . . . . . 15
-       A.2.1.  draft-ietf-dnsop-refuse-any-01 . . . . . . . . . . . . 15
-       A.2.2.  draft-ietf-dnsop-refuse-any-00 . . . . . . . . . . . . 15
-       A.2.3.  draft-jabley-dnsop-refuse-any-01 . . . . . . . . . . . 15
-       A.2.4.  draft-jabley-dnsop-refuse-any-00 . . . . . . . . . . . 15
-   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 16
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                  [Page 2]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
+   1.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  Motivations . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   4.  General Approach  . . . . . . . . . . . . . . . . . . . . . .   3
+   5.  Behaviour of DNS Responders . . . . . . . . . . . . . . . . .   4
+   6.  Behaviour of DNS Initiators . . . . . . . . . . . . . . . . .   5
+   7.  HINFO Considerations  . . . . . . . . . . . . . . . . . . . .   5
+   8.  Changes to RFC 1035 . . . . . . . . . . . . . . . . . . . . .   6
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
+   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+   11. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
+   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     12.1.  Normative References . . . . . . . . . . . . . . . . . .   6
+     12.2.  Informative References . . . . . . . . . . . . . . . . .   7
+     12.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+   Appendix A.  Editorial Notes  . . . . . . . . . . . . . . . . . .   7
+     A.1.  Venue . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     A.2.  Change History  . . . . . . . . . . . . . . . . . . . . .   7
+       A.2.1.  draft-ietf-dnsop-refuse-any-02  . . . . . . . . . . .   7
+       A.2.2.  draft-ietf-dnsop-refuse-any-01  . . . . . . . . . . .   8
+       A.2.3.  draft-ietf-dnsop-refuse-any-00  . . . . . . . . . . .   8
+       A.2.4.  draft-jabley-dnsop-refuse-any-01  . . . . . . . . . .   8
+       A.2.5.  draft-jabley-dnsop-refuse-any-00  . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Terminology
 
@@ -126,48 +104,19 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    refers to the host sending a DNS request as the initiator, and the
    host sending a DNS response as the responder.
 
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY" and "OPTIONAL" in this
-   document are to be interpreted as described in [RFC2119].
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                  [Page 3]
+Abley, et al.             Expires May 14, 2016                  [Page 2]
 
 Internet-Draft      Minimal Responses for ANY Queries      November 2015
 
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY" and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
 
 2.  Introduction
 
@@ -180,51 +129,6 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    guidance for the behaviour of DNS servers or clients in this
    situation.  This document aims to provide such guidance.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                  [Page 4]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
-
 3.  Motivations
 
    ANY queries are legitimately used for debugging and checking the
@@ -234,7 +138,9 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    domain in a single query, although there is no documented guidance
    available for this use case and some implementations have been
    observed that appear not to function as perhaps their developers
-   expected.
+   expected.  For any developer that assumes that ANY query will be sent
+   to authoritative server to fetch all RRsets, they need a fallback
+   when that does not happen.
 
    ANY queries are also frequently used to exploit the amplification
    potential of DNS servers using spoofed source addresses and UDP
@@ -243,49 +149,27 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    amplifiers.
 
    ANY queries are sometimes used to help mine authoritative-only DNS
-   servers for zone data, since they return all RRSets for a particular
-   owner name.  A DNS zone maintainer might prefer not to send full ANY
-   responses to reduce the potential for such information leaks.
+   servers for zone data, since they are expected to return all RRSets
+   for a particular owner name.  A DNS operator MAY prefer not to send
+   large ANY responses to reduce the potential for information leaks.
 
    Some authoritative-only DNS server implementations require additional
    processing in order to send a conventional ANY response, and avoiding
-   that processing expense may be desirable.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                  [Page 5]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
+   that processing expense might be desirable.
 
 4.  General Approach
 
    This proposal provides a mechanism for an authority server to signal
    that conventional ANY queries are not supported for a particular
    QNAME, and to do so in such a way that is both compatible with and
+
+
+
+Abley, et al.             Expires May 14, 2016                  [Page 3]
+
+Internet-Draft      Minimal Responses for ANY Queries      November 2015
+
+
    triggers desirable behaviour by unmodified clients (e.g.  DNS
    resolvers).
 
@@ -307,35 +191,15 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    responders, and operators are free to choose whichever mechanism best
    suits their environment.
 
-   1.  A DNS responder may choose to search for an owner name that
+   1.  A DNS responder MAY choose to search for an owner name that
        matches the QNAME and, if that name owns multiple RRSets, return
-       just one of them.
+       just one of them or a selected subset.  Full RRset(s) MUST be
+       returned.
 
    2.  A DNS responder for whom a search for an owner name with an
-       existing resource record is expensive may instead synthesise an
-       HINFO resource record and return that instead.  See Section 7 for
-       discussion of the use of HINFO.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                  [Page 6]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
+       existing resource record is expensive MAY return instead
+       synthesised HINFO resource.  See Section 7 for discussion of the
+       use of HINFO.
 
 5.  Behaviour of DNS Responders
 
@@ -349,12 +213,21 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    its amplification potential.
 
    If there is no CNAME present at the owner name matching the QNAME,
-   the resource record returned in the response MAY instead synthesised,
-   in which case a single HINFO resource record should be returned.  The
-   CPU field of the HINFO RDATA SHOULD be set to RFCXXXX [note to RFC
-   Editor, replace with RFC number assigned to this document].  The OS
-   field of the HINFO RDATA SHOULD be set to the null string to minimise
-   the size of the response.
+   the resource record returned in the response MAY instead be
+   synthesised, in which case a single HINFO resource record SHOULD be
+   returned.  The CPU field of the HINFO RDATA SHOULD be set to RFCXXXX
+   [note to RFC Editor, replace with RFC number assigned to this
+
+
+
+
+Abley, et al.             Expires May 14, 2016                  [Page 4]
+
+Internet-Draft      Minimal Responses for ANY Queries      November 2015
+
+
+   document].  The OS field of the HINFO RDATA SHOULD be set to the null
+   string to minimise the size of the response.
 
    The TTL encoded for a synthesised RR SHOULD be chosen by the operator
    of the DNS responder to be large enough to suppress frequent
@@ -362,42 +235,17 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    understanding that a TTL that is too long might make policy changes
    relating to ANY queries difficult to change in the future.  The
    specific value used is hence a familiar balance when choosing TTLs
-   for any RR in any zone, and should be specified according to local
-   policy.
+   for any RR in any zone, and be specified according to local policy.
 
    If the DNS query includes DO=1 and the QNAME corresponds to a zone
    that is known by the responder to be signed, a valid RRSIG for the
-   RRSets in the answer section MUST be returned.
+   RRSets in the answer section MUST be returned.  In case DO=0 RRSIG
+   SHOULD be omitted.
 
    Except as described in this section, the DNS responder MUST follow
    the standard algorithms when constructing a response.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                  [Page 7]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
-
 6.  Behaviour of DNS Initiators
-
-   XXX consider whether separate text here is required depending on
-   whether the initiator is a non-caching stub resolver or a caching
-   recursive resolver.
 
    A DNS initator which sends a query with QTYPE=ANY and receives a
    response containing an HINFO, as described in Section 5, MAY cache
@@ -410,45 +258,6 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    the local cache contains a matching HINFO resource record with
    RDATA.CPU field, as described in Section 5.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                  [Page 8]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
-
 7.  HINFO Considerations
 
    In the case where a zone that contains HINFO RRSets is served from an
@@ -456,11 +265,11 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    is possible that the HINFO RRSet in an ANY response, once cached by
    the initiator, might suppress subsequent queries from the same
    initiator with QTYPE=HINFO.  The use of HINFO in this proposal would
-   hence have effectively masked the HINFO RRSet present in the zone.
+   hence have effectively mask the HINFO RRSet present in the zone.
 
    Authority-server operators who serve zones that rely upon
-   conventional use of the HINFO RRType might sensibly choose not to
-   deploy the mechanism described in this document.
+   conventional use of the HINFO RRType MAY sensibly choose not to
+   deploy the mechanism described in this document or select other type.
 
    The HINFO RRType is believed to be rarely used in the DNS at the time
    of writing, based on observations made both at recursive servers and
@@ -468,39 +277,7 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                  [Page 9]
+Abley, et al.             Expires May 14, 2016                  [Page 5]
 
 Internet-Draft      Minimal Responses for ANY Queries      November 2015
 
@@ -514,52 +291,6 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    This document describes optional behaviour for both DNS initators and
    responders, and implementation of the guidance provided by this
    document is OPTIONAL.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                 [Page 10]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
 
 9.  Security Considerations
 
@@ -575,52 +306,10 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    of responses to queries with QTYPE=ANY is compatible with the use of
    DNSSEC by both initiator and responder.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                 [Page 11]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
-
 10.  IANA Considerations
 
    The IANA is requested to update the Resource Record (RR) TYPEs
-   Registry entry as follows:
+   Registry [1] entry as follows:
 
    +------+-------+-------------------------------+--------------------+
    | Type | Value | Meaning                       | Reference          |
@@ -630,104 +319,9 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    |      |       | available                     |                    |
    +------+-------+-------------------------------+--------------------+
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                 [Page 12]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
-
 11.  Acknowledgements
 
    Evan Hunt and David Lawrence provided valuable observations.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                 [Page 13]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
 
 12.  References
 
@@ -736,6 +330,13 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    [RFC1034]  Mockapetris, P., "Domain names - concepts and facilities",
               STD 13, RFC 1034, DOI 10.17487/RFC1034, November 1987,
               <http://www.rfc-editor.org/info/rfc1034>.
+
+
+
+Abley, et al.             Expires May 14, 2016                  [Page 6]
+
+Internet-Draft      Minimal Responses for ANY Queries      November 2015
+
 
    [RFC1035]  Mockapetris, P., "Domain names - implementation and
               specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
@@ -754,36 +355,18 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
               progress), September 2015.
 
    [RFC5358]  Damas, J. and F. Neves, "Preventing Use of Recursive
-              Nameservers in Reflector Attacks", BCP 140, RFC 5358,
-              DOI 10.17487/RFC5358, October 2008,
+              Nameservers in Reflector Attacks", BCP 140, RFC 5358, DOI
+              10.17487/RFC5358, October 2008,
               <http://www.rfc-editor.org/info/rfc5358>.
 
    [RFC6895]  Eastlake 3rd, D., "Domain Name System (DNS) IANA
               Considerations", BCP 42, RFC 6895, DOI 10.17487/RFC6895,
               April 2013, <http://www.rfc-editor.org/info/rfc6895>.
 
+12.3.  URIs
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                 [Page 14]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
+   [1] http://www.iana.org/assignments/dns-parameters/dns-
+       parameters.xhtml#dns-parameters-4
 
 Appendix A.  Editorial Notes
 
@@ -796,50 +379,40 @@ A.1.  Venue
 
 A.2.  Change History
 
-A.2.1.  draft-ietf-dnsop-refuse-any-01
+A.2.1.  draft-ietf-dnsop-refuse-any-02
+
+   Added suggestion to call out RRSIG is optional when DO=0.
+
+   Number of text suggestions from Jeremy Laidman
+
+
+
+
+
+Abley, et al.             Expires May 14, 2016                  [Page 7]
+
+Internet-Draft      Minimal Responses for ANY Queries      November 2015
+
+
+A.2.2.  draft-ietf-dnsop-refuse-any-01
 
    Add IANA Considerations
 
-A.2.2.  draft-ietf-dnsop-refuse-any-00
+A.2.3.  draft-ietf-dnsop-refuse-any-00
 
    Re-submitted with a different name following adoption at the dnsop wg
    meeting convened at IETF 94.
 
-A.2.3.  draft-jabley-dnsop-refuse-any-01
+A.2.4.  draft-jabley-dnsop-refuse-any-01
 
    Make signing of RRSets in answers from signed zones mandatory.
 
    Document the option of returning an existing RRSet in place of a
    synthesised one.
 
-A.2.4.  draft-jabley-dnsop-refuse-any-00
+A.2.5.  draft-jabley-dnsop-refuse-any-00
 
    Initial draft circulated for comment.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                 [Page 15]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
 
 Authors' Addresses
 
@@ -872,25 +445,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                 [Page 16]
-
+Abley, et al.             Expires May 14, 2016                  [Page 8]

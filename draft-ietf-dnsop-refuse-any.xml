@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
-
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-  <!ENTITY rfc1034 PUBLIC ''
-    'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.1034.xml'>
-  <!ENTITY rfc1035 PUBLIC ''
-    'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.1035.xml'>
-  <!ENTITY rfc2119 PUBLIC ''
-    'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml'>
-  <!ENTITY rfc5358 PUBLIC ''
-    'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5358.xml'>
-  <!ENTITY rfc6895 PUBLIC ''
-    'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6895.xml'>
-  <!ENTITY I-D.ietf-dnsop-dns-terminology PUBLIC ''
-    'http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-dnsop-dns-terminology.xml'>
-]>
+<!DOCTYPE rfc SYSTEM 'rfc2629.dtd' [
+	  <!ENTITY rfc1034 PUBLIC '' 
+		   'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.1034.xml'>
+	  <!ENTITY rfc1035 PUBLIC ''
+		   'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.1035.xml'>
+	  <!ENTITY rfc2119 PUBLIC ''
+		   'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml'>
+	  <!ENTITY rfc5358 PUBLIC ''
+		   'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5358.xml'>
+	  <!ENTITY rfc6895 PUBLIC ''
+		   'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6895.xml'>
+	  <!ENTITY I-D.ietf-dnsop-dns-terminology PUBLIC ''
+		   'http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-dnsop-dns-terminology.xml'>
+	  ]>
 
 <rfc category="std" ipr="trust200902" updates="1035"
-  docName="draft-ietf-dnsop-refuse-any-01">
+  docName="draft-ietf-dnsop-refuse-any-02pre">
 
   <?rfc toc="yes" ?>
   <?rfc symrefs="yes" ?>
@@ -131,7 +130,7 @@
       <t>Some authoritative-only DNS server implementations require
 	additional processing in order to send a conventional
 	ANY response, and avoiding that processing
-	expense may be desirable.</t>
+	expense might be desirable.</t>
     </section>
 
     <section title="General Approach"> 
@@ -161,16 +160,15 @@
         whichever mechanism best suits their environment.
 
         <list style="numbers">
-          <t>A DNS responder may choose to search for an owner
+          <t>A DNS responder MAY choose to search for an owner
             name that matches the QNAME and, if that name owns
             multiple RRSets, return just one of them or a selected
             subset. Full RRset(s) MUST be returned.
 	  </t>
 
           <t>A DNS responder for whom a search for an owner name
-	    with an existing resource record is expensive MAY instead be
-	    synthesised HINFO resource record and return that
-	    instead. See <xref target="hinfo"/> for discussion of the
+	    with an existing resource record is expensive MAY return instead 
+	    synthesised HINFO resource. See <xref target="hinfo"/> for discussion of the
             use of HINFO.</t>
         </list></t>
     </section>
@@ -187,8 +185,8 @@
 
       <t>If there is no CNAME present at the owner name matching
 	the QNAME, the resource record returned in the response MAY
-	instead synthesised, in which case a single HINFO resource
-	record should be returned.  The CPU field of the HINFO RDATA
+	instead be synthesised, in which case a single HINFO resource
+	record SHOULD be returned.  The CPU field of the HINFO RDATA
 	SHOULD be set to RFCXXXX [note to RFC Editor, replace with
 	RFC number assigned to this document].  The OS field of the
 	HINFO RDATA SHOULD be set to the null string to minimise
@@ -201,7 +199,7 @@
         might make policy changes relating to ANY queries difficult
         to change in the future. The specific value used is hence
         a familiar balance when choosing TTLs for any RR in any zone,
-        and should be specified according to local policy.</t>
+        and be specified according to local policy.</t>
 
       <t>If the DNS query includes DO=1 and the QNAME corresponds
 	to a zone that is known by the responder to be signed, a valid
@@ -214,10 +212,6 @@
     </section>
 
     <section title="Behaviour of DNS Initiators">
-      <t>XXX consider whether separate text here is required depending
-        on whether the initiator is a non-caching stub resolver or
-        a caching recursive resolver.</t>
-
       <t>A DNS initator which sends a query with QTYPE=ANY and
         receives a response containing an HINFO, as described in
 	<xref target="responder"/>, MAY cache the HINFO response
@@ -239,12 +233,13 @@
 	RRSet in an ANY response, once cached by the initiator,
 	might suppress subsequent queries from the same initiator
 	with QTYPE=HINFO. The use of HINFO in this proposal would
-	hence have effectively masked the HINFO RRSet present in
+	hence have effectively mask the HINFO RRSet present in
 	the zone.</t>
 
       <t>Authority-server operators who serve zones that rely upon
-	conventional use of the HINFO RRType might sensibly choose
-	not to deploy the mechanism described in this document.</t>
+	conventional use of the HINFO RRType MAY sensibly choose
+	not to deploy the mechanism described in this document or
+	select other type.</t>
 
       <t>The HINFO RRType is believed to be rarely used in the DNS
 	at the time of writing, based on observations made both at
@@ -330,7 +325,7 @@
 	<section title="draft-ietf-dnsop-refuse-any-02">
 	  <t>Added suggestion to call out RRSIG is optional when
 	  DO=0.</t>
-	  <t>Number of text suggestions from Jeremy Laidman <t> 
+	  <t>Number of text suggestions from Jeremy Laidman </t> 
 	</section>
         <section title="draft-ietf-dnsop-refuse-any-01">
           <t>Add IANA Considerations</t>
