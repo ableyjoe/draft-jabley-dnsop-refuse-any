@@ -111,7 +111,10 @@
 	and AAAA RRSets for a mail domain in a single query, although
 	there is no documented guidance available for this use case
 	and some implementations have been observed that appear not
-	to function as perhaps their developers expected.</t>
+	to function as perhaps their developers expected. For any
+	developer that assumes that ANY query will be sent to
+	authoritative server to fetch all RRsets, they need a
+	fallback when that does not happen.</t>
 
       <t>ANY queries are also frequently used to exploit the amplification
         potential of DNS servers using spoofed source addresses and
@@ -120,10 +123,10 @@
         less attractive amplifiers.</t>
 
       <t>ANY queries are sometimes used to help mine authoritative-only
-	DNS servers for zone data, since they return all RRSets for
-	a particular owner name. A DNS zone maintainer might prefer
-	not to send full ANY responses to reduce the potential
-	for such information leaks.</t>
+	DNS servers for zone data, since they are expected to return all RRSets for
+	a particular owner name. A DNS operator MAY prefer
+	not to send large ANY responses to reduce the potential
+	for information leaks.</t>
 
       <t>Some authoritative-only DNS server implementations require
 	additional processing in order to send a conventional
@@ -160,11 +163,13 @@
         <list style="numbers">
           <t>A DNS responder may choose to search for an owner
             name that matches the QNAME and, if that name owns
-            multiple RRSets, return just one of them.</t>
+            multiple RRSets, return just one of them or a selected
+            subset. Full RRset(s) MUST be returned.
+	  </t>
 
           <t>A DNS responder for whom a search for an owner name
-	    with an existing resource record is expensive may instead
-	    synthesise an HINFO resource record and return that
+	    with an existing resource record is expensive MAY instead be
+	    synthesised HINFO resource record and return that
 	    instead. See <xref target="hinfo"/> for discussion of the
             use of HINFO.</t>
         </list></t>
@@ -200,7 +205,8 @@
 
       <t>If the DNS query includes DO=1 and the QNAME corresponds
 	to a zone that is known by the responder to be signed, a valid
-	RRSIG for the RRSets in the answer section MUST be returned.</t>
+	RRSIG for the RRSets in the answer section MUST be
+	returned. In case DO=0 RRSIG SHOULD be omitted.</t>
 
       <t>Except as described in this section, the DNS responder
 	MUST follow the standard algorithms when constructing a
@@ -321,6 +327,11 @@
       </section>
 
       <section title="Change History">
+	<section title="draft-ietf-dnsop-refuse-any-02">
+	  <t>Added suggestion to call out RRSIG is optional when
+	  DO=0.</t>
+	  <t>Number of text suggestions from Jeremy Laidman <t> 
+	</section>
         <section title="draft-ietf-dnsop-refuse-any-01">
           <t>Add IANA Considerations</t>
         </section>
