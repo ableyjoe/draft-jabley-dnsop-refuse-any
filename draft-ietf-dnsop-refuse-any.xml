@@ -11,12 +11,12 @@
 		   'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5358.xml'>
 	  <!ENTITY rfc6895 PUBLIC ''
 		   'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6895.xml'>
-	  <!ENTITY I-D.ietf-dnsop-dns-terminology PUBLIC ''
-		   'http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-dnsop-dns-terminology.xml'>
+	  <!ENTITY rfc7719 PUBLIC ''
+		   'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7719.xml'>
 	  ]>
 
 <rfc category="std" ipr="trust200902" updates="1035"
-  docName="draft-ietf-dnsop-refuse-any-02pre">
+  docName="draft-ietf-dnsop-refuse-any-03">
 
   <?rfc toc="yes" ?>
   <?rfc symrefs="yes" ?>
@@ -57,12 +57,12 @@
       </address>
     </author>
 
-    <date day="11" month="November" year="2015"/>
+    <date day="04" month="April" year="2016"/>
 
     <abstract>
       <t>The Domain Name System (DNS) specifies a query type (QTYPE)
         "ANY". The operator of an authoritative DNS server might choose
-        not to respond to such queries for reasons of local policy,
+        not to respond to ssuch queries for reasons of local policy,
         motivated by security, performance or other reasons.</t>
 
       <t>The DNS specification does not include specific guidance
@@ -75,7 +75,7 @@
     <section title="Terminology">
       <t>This document uses terminology specific to the Domain Name
         System (DNS), descriptions of which can be found in
-        <xref target="I-D.ietf-dnsop-dns-terminology"/>.</t>
+        <xref target="RFC7719"/>.</t>
 
       <t>In this document, "ANY Query" refers to a DNS query with
         QTYPE=ANY. An "ANY Response" is a response to such a query.</t>
@@ -309,7 +309,7 @@
       &rfc5358;
       &rfc6895;
 
-      &I-D.ietf-dnsop-dns-terminology;
+      &rfc7719;
     </references>
 
     <section title="Editorial Notes">

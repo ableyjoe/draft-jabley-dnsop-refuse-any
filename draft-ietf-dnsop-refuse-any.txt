@@ -6,18 +6,18 @@ Network Working Group                                           J. Abley
 Internet-Draft                                                 Dyn, Inc.
 Updates: 1035 (if approved)                               O. Gudmundsson
 Intended status: Standards Track                            M. Majkowski
-Expires: May 14, 2016                                    CloudFlare Inc.
-                                                       November 11, 2015
+Expires: October 6, 2016                                 CloudFlare Inc.
+                                                          April 04, 2016
 
 
     Providing Minimal-Sized Responses to DNS Queries with QTYPE=ANY
-                   draft-ietf-dnsop-refuse-any-02pre
+                     draft-ietf-dnsop-refuse-any-03
 
 Abstract
 
    The Domain Name System (DNS) specifies a query type (QTYPE) "ANY".
    The operator of an authoritative DNS server might choose not to
-   respond to such queries for reasons of local policy, motivated by
+   respond to ssuch queries for reasons of local policy, motivated by
    security, performance or other reasons.
 
    The DNS specification does not include specific guidance for the
@@ -39,11 +39,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 14, 2016.
+   This Internet-Draft will expire on October 6, 2016.
 
 Copyright Notice
 
-   Copyright (c) 2015 IETF Trust and the persons identified as the
+   Copyright (c) 2016 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Abley, et al.             Expires May 14, 2016                  [Page 1]
+Abley, et al.            Expires October 6, 2016                [Page 1]
 
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
+Internet-Draft      Minimal Responses for ANY Queries         April 2016
 
 
    carefully, as they describe your rights and restrictions with respect
@@ -94,8 +94,7 @@ Table of Contents
 1.  Terminology
 
    This document uses terminology specific to the Domain Name System
-   (DNS), descriptions of which can be found in
-   [I-D.ietf-dnsop-dns-terminology].
+   (DNS), descriptions of which can be found in [RFC7719].
 
    In this document, "ANY Query" refers to a DNS query with QTYPE=ANY.
    An "ANY Response" is a response to such a query.
@@ -104,19 +103,16 @@ Table of Contents
    refers to the host sending a DNS request as the initiator, and the
    host sending a DNS response as the responder.
 
-
-
-
-
-
-Abley, et al.             Expires May 14, 2016                  [Page 2]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
-
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY" and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
+
+
+
+Abley, et al.            Expires October 6, 2016                [Page 2]
+
+Internet-Draft      Minimal Responses for ANY Queries         April 2016
+
 
 2.  Introduction
 
@@ -162,16 +158,17 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    This proposal provides a mechanism for an authority server to signal
    that conventional ANY queries are not supported for a particular
    QNAME, and to do so in such a way that is both compatible with and
-
-
-
-Abley, et al.             Expires May 14, 2016                  [Page 3]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
-
    triggers desirable behaviour by unmodified clients (e.g.  DNS
    resolvers).
+
+
+
+
+
+Abley, et al.            Expires October 6, 2016                [Page 3]
+
+Internet-Draft      Minimal Responses for ANY Queries         April 2016
+
 
    Alternative proposals for dealing with ANY queries have been
    discussed.  One approach proposed using a new RCODE to signal that an
@@ -217,17 +214,17 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    synthesised, in which case a single HINFO resource record SHOULD be
    returned.  The CPU field of the HINFO RDATA SHOULD be set to RFCXXXX
    [note to RFC Editor, replace with RFC number assigned to this
-
-
-
-
-Abley, et al.             Expires May 14, 2016                  [Page 4]
-
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
-
-
    document].  The OS field of the HINFO RDATA SHOULD be set to the null
    string to minimise the size of the response.
+
+
+
+
+
+Abley, et al.            Expires October 6, 2016                [Page 4]
+
+Internet-Draft      Minimal Responses for ANY Queries         April 2016
+
 
    The TTL encoded for a synthesised RR SHOULD be chosen by the operator
    of the DNS responder to be large enough to suppress frequent
@@ -277,9 +274,12 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
 
 
 
-Abley, et al.             Expires May 14, 2016                  [Page 5]
+
+
+
+Abley, et al.            Expires October 6, 2016                [Page 5]
 
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
+Internet-Draft      Minimal Responses for ANY Queries         April 2016
 
 
 8.  Changes to RFC 1035
@@ -333,9 +333,9 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
 
 
 
-Abley, et al.             Expires May 14, 2016                  [Page 6]
+Abley, et al.            Expires October 6, 2016                [Page 6]
 
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
+Internet-Draft      Minimal Responses for ANY Queries         April 2016
 
 
    [RFC1035]  Mockapetris, P., "Domain names - implementation and
@@ -349,11 +349,6 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
 
 12.2.  Informative References
 
-   [I-D.ietf-dnsop-dns-terminology]
-              Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
-              Terminology", draft-ietf-dnsop-dns-terminology-05 (work in
-              progress), September 2015.
-
    [RFC5358]  Damas, J. and F. Neves, "Preventing Use of Recursive
               Nameservers in Reflector Attacks", BCP 140, RFC 5358, DOI
               10.17487/RFC5358, October 2008,
@@ -362,6 +357,10 @@ Internet-Draft      Minimal Responses for ANY Queries      November 2015
    [RFC6895]  Eastlake 3rd, D., "Domain Name System (DNS) IANA
               Considerations", BCP 42, RFC 6895, DOI 10.17487/RFC6895,
               April 2013, <http://www.rfc-editor.org/info/rfc6895>.
+
+   [RFC7719]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
+              Terminology", RFC 7719, DOI 10.17487/RFC7719, December
+              2015, <http://www.rfc-editor.org/info/rfc7719>.
 
 12.3.  URIs
 
@@ -389,9 +388,10 @@ A.2.1.  draft-ietf-dnsop-refuse-any-02
 
 
 
-Abley, et al.             Expires May 14, 2016                  [Page 7]
+
+Abley, et al.            Expires October 6, 2016                [Page 7]
 
-Internet-Draft      Minimal Responses for ANY Queries      November 2015
+Internet-Draft      Minimal Responses for ANY Queries         April 2016
 
 
 A.2.2.  draft-ietf-dnsop-refuse-any-01
@@ -445,4 +445,4 @@ Authors' Addresses
 
 
 
-Abley, et al.             Expires May 14, 2016                  [Page 8]
+Abley, et al.            Expires October 6, 2016                [Page 8]
