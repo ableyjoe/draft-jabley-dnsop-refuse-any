@@ -16,7 +16,7 @@
 	  ]>
 
 <rfc category="std" ipr="trust200902" updates="1035"
-  docName="draft-ietf-dnsop-refuse-any-03">
+  docName="draft-ietf-dnsop-refuse-any-02">
 
   <?rfc toc="yes" ?>
   <?rfc symrefs="yes" ?>
@@ -57,12 +57,12 @@
       </address>
     </author>
 
-    <date day="04" month="April" year="2016"/>
+    <date day="03" month="April" year="2016"/>
 
     <abstract>
       <t>The Domain Name System (DNS) specifies a query type (QTYPE)
         "ANY". The operator of an authoritative DNS server might choose
-        not to respond to ssuch queries for reasons of local policy,
+        not to respond to such queries for reasons of local policy,
         motivated by security, performance or other reasons.</t>
 
       <t>The DNS specification does not include specific guidance
@@ -77,7 +77,7 @@
         System (DNS), descriptions of which can be found in
         <xref target="RFC7719"/>.</t>
 
-      <t>In this document, "ANY Query" refers to a DNS query with
+      <t>In this document, "ANY Query" refers to a DNS meta-query with
         QTYPE=ANY. An "ANY Response" is a response to such a query.</t>
 
       <t>In an exchange of DNS messages between two hosts, this document
@@ -104,26 +104,26 @@
 
     <section title="Motivations">
       <t>ANY queries are legitimately used for debugging and checking
-	the state of a DNS server for a particular owner name. ANY
+	the state of a DNS server for a particular name. ANY
 	queries are sometimes used as a attempt to reduce the number
 	of queries needed to get information, e.g. to obtain MX, A
-	and AAAA RRSets for a mail domain in a single query, although
+	and AAAA RRSets for a mail domain in a single query. Although
 	there is no documented guidance available for this use case
 	and some implementations have been observed that appear not
 	to function as perhaps their developers expected. For any
 	developer that assumes that ANY query will be sent to
-	authoritative server to fetch all RRsets, they need a
-	fallback when that does not happen.</t>
+	authoritative server to fetch all RRSets, they need to include
+	a fallback when that does not happen.</t>
 
       <t>ANY queries are also frequently used to exploit the amplification
-        potential of DNS servers using spoofed source addresses and
+        potential of DNS servers/resolvers using spoofed source addresses and
         UDP transport (see <xref target="RFC5358"/>). Having the ability
         to return small responses to such queries makes DNS servers
         less attractive amplifiers.</t>
 
       <t>ANY queries are sometimes used to help mine authoritative-only
 	DNS servers for zone data, since they are expected to return all RRSets for
-	a particular owner name. A DNS operator MAY prefer
+	a particular query name. A DNS operator MAY prefer
 	not to send large ANY responses to reduce the potential
 	for information leaks.</t>
 
@@ -142,7 +142,7 @@
 
       <t>Alternative proposals for dealing with ANY queries have been
 	discussed. One approach proposed using a new RCODE to signal
-	that an authortitaive server did not answer ANY queries in
+	that an authoritative server did not answer ANY queries in
 	the standard way. This approach was found to have an
 	undesirable effect on both resolvers and authoritative-only
 	servers; resolvers receiving an unknown RCODE caused them
@@ -156,19 +156,18 @@
 	queries to the same or different authority servers.</t>
 
       <t>This proposal specifies two different modes of behaviour
-        by DNS responders, and operators are free to choose
+        by DNS responders, for names that
+        exists.  Operators/Implementers are free to choose  
         whichever mechanism best suits their environment.
 
         <list style="numbers">
-          <t>A DNS responder MAY choose to search for an owner
-            name that matches the QNAME and, if that name owns
-            multiple RRSets, return just one of them or a selected
-            subset. Full RRset(s) MUST be returned.
+          <t>A DNS responder can choose to select one or subset of
+            RRSets at the QNAME.
 	  </t>
 
-          <t>A DNS responder for whom a search for an owner name
-	    with an existing resource record is expensive MAY return instead 
-	    synthesised HINFO resource. See <xref target="hinfo"/> for discussion of the
+          <t>A DNS responder can return instead synthesised HINFO
+            resource record. 
+	    See <xref target="hinfo"/> for discussion of the
             use of HINFO.</t>
         </list></t>
     </section>
@@ -180,8 +179,8 @@
 
       <t>The RRSet returned in the answer section of the response
 	MAY be a single RRSet owned by the name specified in the
-	QNAME. Where multiple RRSets exist, the responder MAY choose
-	a small one to reduce its amplification potential.</t>
+	QNAME. Where multiple RRSets exist, the responder SHOULD choose
+	a small one(s) to reduce its amplification potential.</t>
 
       <t>If there is no CNAME present at the owner name matching
 	the QNAME, the resource record returned in the response MAY
@@ -189,7 +188,7 @@
 	record SHOULD be returned.  The CPU field of the HINFO RDATA
 	SHOULD be set to RFCXXXX [note to RFC Editor, replace with
 	RFC number assigned to this document].  The OS field of the
-	HINFO RDATA SHOULD be set to the null string to minimise
+	HINFO RDATA SHOULD be set to the null string to minimize
 	the size of the response.</t>
 
       <t>The TTL encoded for a synthesised RR SHOULD be chosen by the
@@ -198,13 +197,14 @@
         the same QNAME, understanding that a TTL that is too long
         might make policy changes relating to ANY queries difficult
         to change in the future. The specific value used is hence
-        a familiar balance when choosing TTLs for any RR in any zone,
+        a familiar balance when choosing TTL for any RR in any zone,
         and be specified according to local policy.</t>
 
       <t>If the DNS query includes DO=1 and the QNAME corresponds
 	to a zone that is known by the responder to be signed, a valid
-	RRSIG for the RRSets in the answer section MUST be
-	returned. In case DO=0 RRSIG SHOULD be omitted.</t>
+	RRSIG for the RRSets in the answer (or authority if answer is
+	empty) section MUST be returned.  In case DO=0 RRSIG SHOULD be
+	omitted.</t> 
 
       <t>Except as described in this section, the DNS responder
 	MUST follow the standard algorithms when constructing a
@@ -212,7 +212,7 @@
     </section>
 
     <section title="Behaviour of DNS Initiators">
-      <t>A DNS initator which sends a query with QTYPE=ANY and
+      <t>A DNS initiator which sends a query with QTYPE=ANY and
         receives a response containing an HINFO, as described in
 	<xref target="responder"/>, MAY cache the HINFO response
 	in the normal way. Such cached HINFO resource records SHOULD
@@ -237,11 +237,11 @@
 	the zone.</t>
 
       <t>Authority-server operators who serve zones that rely upon
-	conventional use of the HINFO RRType MAY sensibly choose
+	conventional use of the HINFO RRTYPE MAY sensibly choose
 	not to deploy the mechanism described in this document or
 	select other type.</t>
 
-      <t>The HINFO RRType is believed to be rarely used in the DNS
+      <t>The HINFO RRTYPE is believed to be rarely used in the DNS
 	at the time of writing, based on observations made both at
 	recursive servers and authority servers.
       </t>
@@ -254,16 +254,26 @@
 	ALL.</t>
 
       <t>This document describes optional behaviour for both DNS
-        initators and responders, and implementation of the guidance
+        initiators and responders, and implementation of the guidance
         provided by this document is OPTIONAL.</t>
 
     </section>
+
+    <section title="Implementation experience"> 
+      <t> In October 2015 CloudFlare Authoritative Nameserver
+      implementation implemented the HINFO response. Few minor
+      problems have been reported and worked out. NSD has for a while
+      implemented a sub-set response. A Bind user implemented this
+      draft suggestion of returning only single RRset during an
+      attack.
+      </t> 
+    </section> 
 
     <section title="Security Considerations">
       <t>Queries with QTYPE=ANY are frequently observed as part of
 	reflection attacks, since a relatively small query can be
 	used to elicit a large response; this is a desirable
-	characteristic if the goal is to maximise the amplification
+	characteristic if the goal is to maximize the amplification
 	potential of a DNS server as part of a volumetric attack.
 	The ability of a DNS operator to suppress such responses
 	on a particular server makes that server a less useful
@@ -294,7 +304,12 @@
     </section>
 
     <section title="Acknowledgements">
-      <t>Evan Hunt and David Lawrence provided valuable observations.</t>
+      <t>Evan Hunt and David Lawrence provided valuable
+      observations and concrete suggestions. Jeremy Laidman helped
+      make the document better. Tony Finch realized that this document was
+      valuable and implemented it while under attack. A large number
+      of people have provided comments and suggestions we thank them
+      all for the feedback. </t>
     </section>
   </middle>
 
@@ -316,12 +331,12 @@
       <t>This section (and sub-sections) to be removed prior to
         publication.</t>
 
-      <section title="Venue">
-        <t>An appropriate forum for discussion of this draft is
-          the dnsop working group.</t>
-      </section>
-
       <section title="Change History">
+	<section title="draft-ietf-dnsop-refuse-any-03"> 
+	  <t> Text clarifications, reflecting experience, added
+	  implementation experience. 
+	  </t>
+	</section> 
 	<section title="draft-ietf-dnsop-refuse-any-02">
 	  <t>Added suggestion to call out RRSIG is optional when
 	  DO=0.</t>
