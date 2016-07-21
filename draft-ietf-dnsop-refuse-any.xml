@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="03" month="April" year="2016"/>
+    <date day="21" month="July" year="2016"/>
 
     <abstract>
       <t>The Domain Name System (DNS) specifies a query type (QTYPE)
@@ -72,6 +72,17 @@
   </front>
 
   <middle>
+
+    <section title="Introduction">
+      <t>The Domain Name System (DNS) specifies a query type (QTYPE)
+        "ANY". The operator of an authoritative DNS server might choose
+        not to respond to such queries for reasons of local policy,
+        motivated by security, performance or other reasons.</t>
+
+      <t>The DNS specification <xref target="RFC1034"/> <xref
+        target="RFC1035"/> does not include specific guidance
+	for the behaviour of DNS servers or clients in this situation.
+	This document aims to provide such guidance.</t>
     <section title="Terminology">
       <t>This document uses terminology specific to the Domain Name
         System (DNS), descriptions of which can be found in
@@ -89,17 +100,6 @@
         and "OPTIONAL" in this document are to be interpreted as
         described in <xref target="RFC2119"/>.</t>
     </section>
-
-    <section title="Introduction">
-      <t>The Domain Name System (DNS) specifies a query type (QTYPE)
-        "ANY". The operator of an authoritative DNS server might choose
-        not to respond to such queries for reasons of local policy,
-        motivated by security, performance or other reasons.</t>
-
-      <t>The DNS specification <xref target="RFC1034"/> <xref
-        target="RFC1035"/> does not include specific guidance
-	for the behaviour of DNS servers or clients in this situation.
-	This document aims to provide such guidance.</t>
     </section>
 
     <section title="Motivations">
@@ -165,7 +165,7 @@
             RRSets at the QNAME.
 	  </t>
 
-          <t>A DNS responder can return instead synthesised HINFO
+          <t>A DNS responder can instead return a synthesised HINFO
             resource record. 
 	    See <xref target="hinfo"/> for discussion of the
             use of HINFO.</t>
@@ -203,7 +203,7 @@
       <t>If the DNS query includes DO=1 and the QNAME corresponds
 	to a zone that is known by the responder to be signed, a valid
 	RRSIG for the RRSets in the answer (or authority if answer is
-	empty) section MUST be returned.  In case DO=0 RRSIG SHOULD be
+	empty) section MUST be returned.  In the case of DO=0, the RRSIG SHOULD be
 	omitted.</t> 
 
       <t>Except as described in this section, the DNS responder
@@ -213,7 +213,7 @@
 
     <section title="Behaviour of DNS Initiators">
       <t>A DNS initiator which sends a query with QTYPE=ANY and
-        receives a response containing an HINFO, as described in
+        receives a response containing an HINFO resource record, as described in
 	<xref target="responder"/>, MAY cache the HINFO response
 	in the normal way. Such cached HINFO resource records SHOULD
 	be retained in the cache following normal caching semantics,
@@ -259,7 +259,7 @@
 
     </section>
 
-    <section title="Implementation experience"> 
+    <section title="Implementation Experience"> 
       <t> In October 2015 CloudFlare Authoritative Nameserver
       implementation implemented the HINFO response. Few minor
       problems have been reported and worked out. NSD has for a while
