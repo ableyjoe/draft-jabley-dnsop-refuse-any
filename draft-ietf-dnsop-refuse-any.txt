@@ -73,7 +73,7 @@ Table of Contents
    4.  Behaviour of DNS Responders . . . . . . . . . . . . . . . . .   4
    5.  Behaviour of DNS Initiators . . . . . . . . . . . . . . . . .   5
    6.  HINFO Considerations  . . . . . . . . . . . . . . . . . . . .   5
-   7.  Changes to RFC 1035 . . . . . . . . . . . . . . . . . . . . .   6
+   7.  Updates to RFC 1035 . . . . . . . . . . . . . . . . . . . . .   6
    8.  Implementation Experience . . . . . . . . . . . . . . . . . .   6
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
    10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
@@ -81,16 +81,17 @@ Table of Contents
    12. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      12.1.  Normative References . . . . . . . . . . . . . . . . . .   7
      12.2.  Informative References . . . . . . . . . . . . . . . . .   7
-     12.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     12.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .   8
    Appendix A.  Editorial Notes  . . . . . . . . . . . . . . . . . .   8
      A.1.  Change History  . . . . . . . . . . . . . . . . . . . . .   8
-       A.1.1.  draft-ietf-dnsop-refuse-any-03  . . . . . . . . . . .   8
-       A.1.2.  draft-ietf-dnsop-refuse-any-02  . . . . . . . . . . .   8
-       A.1.3.  draft-ietf-dnsop-refuse-any-01  . . . . . . . . . . .   8
-       A.1.4.  draft-ietf-dnsop-refuse-any-00  . . . . . . . . . . .   8
-       A.1.5.  draft-jabley-dnsop-refuse-any-01  . . . . . . . . . .   8
-       A.1.6.  draft-jabley-dnsop-refuse-any-00  . . . . . . . . . .   8
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
+       A.1.1.  draft-ietf-dnsop-refuse-any-04  . . . . . . . . . . .   8
+       A.1.2.  draft-ietf-dnsop-refuse-any-03  . . . . . . . . . . .   8
+       A.1.3.  draft-ietf-dnsop-refuse-any-02  . . . . . . . . . . .   8
+       A.1.4.  draft-ietf-dnsop-refuse-any-01  . . . . . . . . . . .   8
+       A.1.5.  draft-ietf-dnsop-refuse-any-00  . . . . . . . . . . .   8
+       A.1.6.  draft-jabley-dnsop-refuse-any-01  . . . . . . . . . .   8
+       A.1.7.  draft-jabley-dnsop-refuse-any-00  . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
 
 1.  Introduction
 
@@ -102,7 +103,6 @@ Table of Contents
    The DNS specification [RFC1034] [RFC1035] does not include specific
    guidance for the behaviour of DNS servers or clients in this
    situation.  This document aims to provide such guidance.
-
 
 
 
@@ -151,13 +151,13 @@ Internet-Draft      Minimal Responses for ANY Queries          July 2016
 
    ANY queries are sometimes used to help mine authoritative-only DNS
    servers for zone data, since they are expected to return all RRSets
-   for a particular query name.  A DNS operator MAY prefer not to send
-   large ANY responses to reduce the potential for information leaks.
+   for a particular query name.  If a DNS operator prefers to reduce the
+   potential for information leaks, they MAY choose to not to send large
+   ANY responses.
 
    Some authoritative-only DNS server implementations require additional
    processing in order to send a conventional ANY response, and avoiding
    that processing expense might be desirable.
-
 
 
 
@@ -193,8 +193,8 @@ Internet-Draft      Minimal Responses for ANY Queries          July 2016
    authority servers.
 
    This proposal specifies two different modes of behaviour by DNS
-   responders, for names that exists.  Operators/Implementers are free
-   to choose whichever mechanism best suits their environment.
+   responders for names that exists.  Operators/Implementers are free to
+   choose whichever mechanism best suits their environment.
 
    1.  A DNS responder can choose to select one or subset of RRSets at
        the QNAME.
@@ -282,7 +282,7 @@ Abley, et al.           Expires January 22, 2017                [Page 5]
 Internet-Draft      Minimal Responses for ANY Queries          July 2016
 
 
-7.  Changes to RFC 1035
+7.  Updates to RFC 1035
 
    It is important to note that returning a subset of available RRSets
    when processing an ANY query is legitimate and consistent with
@@ -291,6 +291,11 @@ Internet-Draft      Minimal Responses for ANY Queries          July 2016
    This document describes optional behaviour for both DNS initiators
    and responders, and implementation of the guidance provided by this
    document is OPTIONAL.
+
+   RRSIG queries have the same potential as ANY queries of generating
+   large answers as well as extra work.  DNS implementations are free to
+   not return all RRSIGS.  In the wild there are implimentations that
+   return REFUSE, others return single RRSIG, etc.
 
 8.  Implementation Experience
 
@@ -319,13 +324,8 @@ Internet-Draft      Minimal Responses for ANY Queries          July 2016
    The IANA is requested to update the Resource Record (RR) TYPEs
    Registry [1] entry as follows:
 
-   +------+-------+-------------------------------+--------------------+
-   | Type | Value | Meaning                       | Reference          |
-   +------+-------+-------------------------------+--------------------+
-   | *    | 255   | A request for some or all     | [RFC1035][RFC6895] |
-   |      |       | records the server has        | [This Document]    |
-   |      |       | available                     |                    |
-   +------+-------+-------------------------------+--------------------+
+
+
 
 
 
@@ -337,6 +337,14 @@ Abley, et al.           Expires January 22, 2017                [Page 6]
 
 Internet-Draft      Minimal Responses for ANY Queries          July 2016
 
+
+   +------+-------+-------------------------------+--------------------+
+   | Type | Value | Meaning                       | Reference          |
+   +------+-------+-------------------------------+--------------------+
+   | *    | 255   | A request for some or all     | [RFC1035][RFC6895] |
+   |      |       | records the server has        | [This Document]    |
+   |      |       | available                     |                    |
+   +------+-------+-------------------------------+--------------------+
 
 11.  Acknowledgements
 
@@ -378,14 +386,6 @@ Internet-Draft      Minimal Responses for ANY Queries          July 2016
               Terminology", RFC 7719, DOI 10.17487/RFC7719, December
               2015, <http://www.rfc-editor.org/info/rfc7719>.
 
-12.3.  URIs
-
-   [1] http://www.iana.org/assignments/dns-parameters/dns-
-       parameters.xhtml#dns-parameters-4
-
-
-
-
 
 
 
@@ -394,42 +394,61 @@ Abley, et al.           Expires January 22, 2017                [Page 7]
 Internet-Draft      Minimal Responses for ANY Queries          July 2016
 
 
+12.3.  URIs
+
+   [1] http://www.iana.org/assignments/dns-parameters/dns-
+       parameters.xhtml#dns-parameters-4
+
 Appendix A.  Editorial Notes
 
    This section (and sub-sections) to be removed prior to publication.
 
 A.1.  Change History
 
-A.1.1.  draft-ietf-dnsop-refuse-any-03
+A.1.1.  draft-ietf-dnsop-refuse-any-04
+
+   Change section name to "Updates to RFC1034", few minor grammar
+   changes suggested by Matthew Pounsett and Tony Finch.
+
+A.1.2.  draft-ietf-dnsop-refuse-any-03
 
    Text clarifications, reflecting experience, added implementation
    experience.
 
-A.1.2.  draft-ietf-dnsop-refuse-any-02
+A.1.3.  draft-ietf-dnsop-refuse-any-02
 
    Added suggestion to call out RRSIG is optional when DO=0.
 
    Number of text suggestions from Jeremy Laidman
 
-A.1.3.  draft-ietf-dnsop-refuse-any-01
+A.1.4.  draft-ietf-dnsop-refuse-any-01
 
    Add IANA Considerations
 
-A.1.4.  draft-ietf-dnsop-refuse-any-00
+A.1.5.  draft-ietf-dnsop-refuse-any-00
 
    Re-submitted with a different name following adoption at the dnsop wg
    meeting convened at IETF 94.
 
-A.1.5.  draft-jabley-dnsop-refuse-any-01
+A.1.6.  draft-jabley-dnsop-refuse-any-01
 
    Make signing of RRSets in answers from signed zones mandatory.
 
    Document the option of returning an existing RRSet in place of a
    synthesised one.
 
-A.1.6.  draft-jabley-dnsop-refuse-any-00
+A.1.7.  draft-jabley-dnsop-refuse-any-00
 
    Initial draft circulated for comment.
+
+
+
+
+
+Abley, et al.           Expires January 22, 2017                [Page 8]
+
+Internet-Draft      Minimal Responses for ANY Queries          July 2016
+
 
 Authors' Addresses
 
@@ -443,35 +462,16 @@ Authors' Addresses
    Email: jabley@dyn.com
 
 
-
-
-Abley, et al.           Expires January 22, 2017                [Page 8]
-
-Internet-Draft      Minimal Responses for ANY Queries          July 2016
-
-
    Olafur Gudmundsson
    CloudFlare Inc.
 
-   Email: olafur@cloudflare.com
+   Email: olafur+ietf@cloudflare.com
 
 
    Marek Majkowski
    CloudFlare Inc.
 
    Email: marek@cloudflare.com
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

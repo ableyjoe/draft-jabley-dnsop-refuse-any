@@ -46,7 +46,7 @@
     <author initials="O." surname="Gudmundsson" fullname="Olafur Gudmundsson">
       <organization>CloudFlare Inc.</organization>
       <address>
-        <email>olafur@cloudflare.com</email>
+        <email>olafur+ietf@cloudflare.com</email>
       </address>
     </author>
 
@@ -123,9 +123,9 @@
 
       <t>ANY queries are sometimes used to help mine authoritative-only
 	DNS servers for zone data, since they are expected to return all RRSets for
-	a particular query name. A DNS operator MAY prefer
-	not to send large ANY responses to reduce the potential
-	for information leaks.</t>
+	a particular query name. If a DNS operator prefers to reduce
+	the potential for information leaks, they MAY choose to 
+	not to send large ANY responses.</t>
 
       <t>Some authoritative-only DNS server implementations require
 	additional processing in order to send a conventional
@@ -156,7 +156,7 @@
 	queries to the same or different authority servers.</t>
 
       <t>This proposal specifies two different modes of behaviour
-        by DNS responders, for names that
+        by DNS responders for names that
         exists.  Operators/Implementers are free to choose  
         whichever mechanism best suits their environment.
 
@@ -247,7 +247,7 @@
       </t>
     </section>
 
-    <section title="Changes to RFC 1035">
+    <section title="Updates to RFC 1035">
       <t>It is important to note that returning a subset of available
 	RRSets when processing an ANY query is legitimate and
 	consistent with <xref target="RFC1035"/>; ANY does not mean
@@ -256,6 +256,12 @@
       <t>This document describes optional behaviour for both DNS
         initiators and responders, and implementation of the guidance
         provided by this document is OPTIONAL.</t>
+
+      <t>RRSIG queries have the same potential as ANY queries of
+      generating large answers as well as extra work. DNS
+      implementations are free to not return all RRSIGS. In the wild
+      there are implimentations that return REFUSE, others return
+      single RRSIG, etc.</t>
 
     </section>
 
@@ -332,6 +338,10 @@
         publication.</t>
 
       <section title="Change History">
+	<section title="draft-ietf-dnsop-refuse-any-04">
+	  <t> Change section name to "Updates to RFC1034", few minor
+	  grammar changes suggested by Matthew Pounsett and Tony Finch.</t>
+	</section>
 	<section title="draft-ietf-dnsop-refuse-any-03"> 
 	  <t> Text clarifications, reflecting experience, added
 	  implementation experience. 
