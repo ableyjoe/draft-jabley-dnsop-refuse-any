@@ -16,7 +16,7 @@
 	  ]>
 
 <rfc category="std" ipr="trust200902" updates="1035"
-  docName="draft-ietf-dnsop-refuse-any-02">
+  docName="draft-ietf-dnsop-refuse-any-03">
 
   <?rfc toc="yes" ?>
   <?rfc symrefs="yes" ?>
@@ -44,20 +44,20 @@
     </author>
 
     <author initials="O." surname="Gudmundsson" fullname="Olafur Gudmundsson">
-      <organization>CloudFlare Inc.</organization>
+      <organization>Cloudflare Inc.</organization>
       <address>
         <email>olafur+ietf@cloudflare.com</email>
       </address>
     </author>
 
     <author initials="M." surname="Majkowski" fullname="Marek Majkowski">
-      <organization>CloudFlare Inc.</organization>
+      <organization>Cloudflare Inc.</organization>
       <address>
         <email>marek@cloudflare.com</email>
       </address>
     </author>
 
-    <date day="21" month="July" year="2016"/>
+    <date day="16" month="November" year="2016"/>
 
     <abstract>
       <t>The Domain Name System (DNS) specifies a query type (QTYPE)
@@ -174,7 +174,7 @@
 
     <section title="Behaviour of DNS Responders" anchor="responder">
       <t>A DNS responder which receives an ANY query MAY decline
-	to provide a conventional response, and MAY instead send a
+	to provide a conventional response, or MAY instead send a
 	response with a single RRSet in the answer section.</t>
 
       <t>The RRSet returned in the answer section of the response
@@ -229,7 +229,7 @@
     <section title="HINFO Considerations" anchor="hinfo">
       <t>In the case where a zone that contains HINFO RRSets is
 	served from an authority server that does not provide
-	conventional ANY responses, it is possible that the HINFO
+	conventional ANY responses. It is possible that the HINFO
 	RRSet in an ANY response, once cached by the initiator,
 	might suppress subsequent queries from the same initiator
 	with QTYPE=HINFO. The use of HINFO in this proposal would
@@ -239,7 +239,7 @@
       <t>Authority-server operators who serve zones that rely upon
 	conventional use of the HINFO RRTYPE MAY sensibly choose
 	not to deploy the mechanism described in this document or
-	select other type.</t>
+	select another type.</t>
 
       <t>The HINFO RRTYPE is believed to be rarely used in the DNS
 	at the time of writing, based on observations made both at
@@ -266,7 +266,7 @@
     </section>
 
     <section title="Implementation Experience"> 
-      <t> In October 2015 CloudFlare Authoritative Nameserver
+      <t> In October 2015 Cloudflare Authoritative Nameserver
       implementation implemented the HINFO response. Few minor
       problems have been reported and worked out. NSD has for a while
       implemented a sub-set response. A Bind user implemented this
@@ -338,11 +338,9 @@
         publication.</t>
 
       <section title="Change History">
-	<section title="draft-ietf-dnsop-refuse-any-04">
+	<section title="draft-ietf-dnsop-refuse-any-03">
 	  <t> Change section name to "Updates to RFC1034", few minor
 	  grammar changes suggested by Matthew Pounsett and Tony Finch.</t>
-	</section>
-	<section title="draft-ietf-dnsop-refuse-any-03"> 
 	  <t> Text clarifications, reflecting experience, added
 	  implementation experience. 
 	  </t>
