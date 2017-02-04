@@ -260,7 +260,7 @@
       <t>RRSIG queries have the same potential as ANY queries of
       generating large answers as well as extra work. DNS
       implementations are free to not return all RRSIGS. In the wild
-      there are implimentations that return REFUSE, others return
+      there are implementations that return REFUSE, others return
       single RRSIG, etc.</t>
 
     </section>
