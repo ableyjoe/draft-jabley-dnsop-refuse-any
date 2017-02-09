@@ -6,12 +6,12 @@ Network Working Group                                           J. Abley
 Internet-Draft                                                 Dyn, Inc.
 Updates: 1035 (if approved)                               O. Gudmundsson
 Intended status: Standards Track                            M. Majkowski
-Expires: August 8, 2017                                  Cloudflare Inc.
-                                                       February 04, 2017
+Expires: August 12, 2017                                 Cloudflare Inc.
+                                                       February 08, 2017
 
 
   Providing Minimal-Sized Responses to DNS Queries that have QTYPE=ANY
-                    draft-ietf-dnsop-refuse-any-04aa
+                     draft-ietf-dnsop-refuse-any-04
 
 Abstract
 
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 8, 2017.
+   This Internet-Draft will expire on August 12, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Abley, et al.            Expires August 8, 2017                 [Page 1]
+Abley, et al.            Expires August 12, 2017                [Page 1]
 
 Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Abley, et al.            Expires August 8, 2017                 [Page 2]
+Abley, et al.            Expires August 12, 2017                [Page 2]
 
 Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
@@ -165,7 +165,7 @@ Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
 
 
-Abley, et al.            Expires August 8, 2017                 [Page 3]
+Abley, et al.            Expires August 12, 2017                [Page 3]
 
 Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
@@ -206,7 +206,7 @@ Internet-Draft      Minimal Responses for ANY Queries      February 2017
        See Section 6 for discussion of the use of HINFO.
 
    3.  Resolver can try to give out the most likely records the
-       requestor wants.  This is not always possible and the likely
+       requester wants.  This is not always possible and the likely
        RRsets may add up to a large answer.
 
    Except as described below in this section, the DNS responder MUST
@@ -221,7 +221,7 @@ Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
 
 
-Abley, et al.            Expires August 8, 2017                 [Page 4]
+Abley, et al.            Expires August 12, 2017                [Page 4]
 
 Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
@@ -258,26 +258,26 @@ Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
 4.3.  Guess intention
 
-   In some cases it is possible to guess what the initator wants in the
+   In some cases it is possible to guess what the initiator wants in the
    answer but not always.  Some implementations have implemented the
    spirit of this document by returning all of CNAME or (MX A and AAAA)
-   RRSset's that are present.  This is not a guess but a heuristic that
+   RRsets that are present.  This is not a guess but a heuristic that
    seems to work well in practice.  The main drawback is the size of the
    answer.
 
-   As in the first one if the zone is signed RRSIG's MUST be returned if
+   As in the first one if the zone is signed RRSIG MUST be returned if
    there the DO bit is set on query.
 
 4.4.  Responding to queries over TCP
 
    There has been a desire to specify that a ANY query over TCP get full
-   response.  This document does not specify that as that should be left
-   to the operator.  Impementors SHOULD provide an option for operators
-   to specify behavior over TCP.
+   response.  This document does not specify that as that is best left
+   to the operator to decide.  Implementers SHOULD provide an option for
+   operators to specify behavior over TCP.
 
 
 
-Abley, et al.            Expires August 8, 2017                 [Page 5]
+Abley, et al.            Expires August 12, 2017                [Page 5]
 
 Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
@@ -286,7 +286,7 @@ Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
    A DNS initiator which sends a query with QTYPE=ANY and receives a
    response containing an HINFO resource record or a single RRset, as
-   described in Section 4, MAY cache the responsein the normal way.
+   described in Section 4, MAY cache the response in the normal way.
    Such cached resource records SHOULD be retained in the cache
    following normal caching semantics, as it would with any other
    response received from a DNS responder.
@@ -327,20 +327,20 @@ Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
    RRSIG queries have the same potential as ANY queries of generating
    large answers as well as extra work.  DNS implementations are free to
-   not return all RRSIGS.  In the wild there are implementations that
-   return REFUSE, others return single RRSIG, etc.  This document
+   not return all RRSIG records.  In the wild there are implementations
+   that return REFUSE, others return single RRSIG, etc.  This document
    recommends returning a single RRSIG in this case.
 
 
 
-Abley, et al.            Expires August 8, 2017                 [Page 6]
+Abley, et al.            Expires August 12, 2017                [Page 6]
 
 Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
 
 8.  Implementation Experience
 
-   In October 2015 Cloudflare Authoritative Nameserver implementation
+   In October 2015 Cloudflare Authoritative Name server implementation
    implemented the HINFO response.  Few minor problems have been
    reported and worked out.  NSD has for a while implemented a sub-set
    response.  A Bind user implemented this draft suggestion of returning
@@ -389,7 +389,7 @@ Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
 
 
-Abley, et al.            Expires August 8, 2017                 [Page 7]
+Abley, et al.            Expires August 12, 2017                [Page 7]
 
 Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
@@ -441,17 +441,17 @@ A.1.1.  draft-ietf-dnsop-refuse-any-04
 
    These are the changes requested during WGLC.  The title has been
    updated for readability The behavior section now contains description
-   of three differt approaches in order of preference.  Text added on
+   of three different approaches in order of preference.  Text added on
 
 
 
-Abley, et al.            Expires August 8, 2017                 [Page 8]
+Abley, et al.            Expires August 12, 2017                [Page 8]
 
 Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
 
    behavior over TCP.  The document is clear in how it updates from
-   RFC1035.  Minor adjustments for readability and remove redundance.
+   RFC1035.  Minor adjustments for readability and remove redundancy.
 
 A.1.2.  draft-ietf-dnsop-refuse-any-03
 
@@ -473,7 +473,7 @@ A.1.4.  draft-ietf-dnsop-refuse-any-01
 
 A.1.5.  draft-ietf-dnsop-refuse-any-00
 
-   Re-submitted with a different name following adoption at the dnsop wg
+   Re-submitted with a different name following adoption at the dnsop WG
    meeting convened at IETF 94.
 
 A.1.6.  draft-jabley-dnsop-refuse-any-01
@@ -501,7 +501,7 @@ Authors' Addresses
 
 
 
-Abley, et al.            Expires August 8, 2017                 [Page 9]
+Abley, et al.            Expires August 12, 2017                [Page 9]
 
 Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
@@ -557,4 +557,4 @@ Internet-Draft      Minimal Responses for ANY Queries      February 2017
 
 
 
-Abley, et al.            Expires August 8, 2017                [Page 10]
+Abley, et al.            Expires August 12, 2017               [Page 10]
