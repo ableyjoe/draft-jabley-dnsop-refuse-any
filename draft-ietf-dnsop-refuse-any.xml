@@ -16,8 +16,8 @@
     'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7719.xml'>
 ]>
 
-<rfc category="std" ipr="trust200902" updates="1035"
-  docName="draft-ietf-dnsop-refuse-any-05">
+<rfc category="std" ipr="trust200902" updates="1034, 1035"
+  docName="draft-ietf-dnsop-refuse-any-06">
 
   <?rfc toc="yes" ?>
   <?rfc symrefs="yes" ?>
@@ -94,6 +94,12 @@
         <t>In this document, "ANY Query" refers to a DNS meta-query
           with QTYPE=ANY. An "ANY Response" is a response to such
           a query.</t>
+
+	<t>In this document, "conventional ANY response" means an
+	  ANY response that is constructed in accordance with the
+	  algorithm documented in section 4.3.2 of <xref
+	  target="RFC1034"/> and specifically without implementing
+	  any of the mechanisms described in this document.</t>
 
         <t>In an exchange of DNS messages between two hosts, this
           document refers to the host sending a DNS request as the
@@ -189,7 +195,7 @@
 
       <section title="Answer with a Subset of Available RRSets">
         <t>A DNS responder which receives an ANY query MAY decline
-          to provide a conventional response, or MAY instead send
+          to provide a conventional ANY response, or MAY instead send
           a response with a single RRSet (or a larger subset of
           available RRSets) in the answer section.</t>
 
@@ -201,6 +207,10 @@
 
         <t>If the zone is signed, appropriate RRSIG records MUST
           be included in the answer.</t>
+
+	<t>Note that this mechanism does not provide any signalling
+	  to indicate to a client that an incomplete subset of the
+	  available RRSets has been returned.</t>
       </section>
 
       <section title="Answer with a Synthesised HINFO RRSet"> 
@@ -246,7 +256,7 @@
       <section title="Behaviour with TCP Transport">
         <t>A DNS responder MAY behave differently when processing
           ANY queries received over different transport, e.g. by
-          providing a conventional, full response over TCP whilst
+          providing a conventional ANY response over TCP whilst
           using one of the other mechanisms specified in this document
           in the case where a query was received using UDP.</t>
 
@@ -289,13 +299,17 @@
         recursive servers, authority servers and in passive DNS.</t>
     </section>
 
-    <section title="Updates to RFC 1035">
+    <section title="Updates to RFC 1034 and RFC 1035">
+      <t>This document extends the specification for processing ANY
+	queries described in section 4.3.2 of <xref target="RFC1034"/>.</t>
+
       <t>It is important to note that returning a subset of available
-        RRSets when processing an ANY query is legitimate and
-        consistent with <xref target="RFC1035"/>; ANY does not mean
-        ALL. The main difference here is that the TC bit SHOULD not
-        be set on the response indicating that this is not a complete
-        answer.</t>
+	RRSets when processing an ANY query is legitimate and
+	consistent with <xref target="RFC1035"/>; it can be argued
+	that ANY does not always mean ALL, as used in section 3.2.3
+	of <xref target="RFC1035"/>. The main difference here is
+	that the TC bit SHOULD not be set on the response indicating
+	that this is not a complete answer.</t>
 
       <t>This document describes optional behaviour for both DNS
         initiators and responders, and implementation of the guidance
@@ -364,11 +378,12 @@
 
     <section title="Acknowledgements">
       <t>Evan Hunt and David Lawrence provided valuable observations
-        and concrete suggestions. Jeremy Laidman helped make the
-        document better. Tony Finch realized that this document was
-        valuable and implemented it while under attack. A large
-        number of people have provided comments and suggestions we
-        thank them all for the feedback.</t>
+	and concrete suggestions. Jeremy Laidman helped make the
+	document better. Tony Finch realized that this document was
+	valuable and implemented it while under attack. Richard
+	Gibson identified areas where more detail and accuracy was
+	useful. A large number of other people also provided comments
+	and suggestions we thank them all for the feedback.</t>
     </section>
   </middle>
 
@@ -391,6 +406,13 @@
         publication.</t>
 
       <section title="Change History">
+        <section title="draft-ietf-dnsop-refuse-any-06">
+	  <t>Update RFC 1034 as well as RFC 1035; define the term
+	    "conventional ANY response"; soften and qualify ANY
+	    does not mean ALL; note that the subset mode response
+	    lacks signalling.</t>
+	</section>
+
         <section title="draft-ietf-dnsop-refuse-any-05">
           <t>Minor editorial changes. Soften advice on RRSIG queries.
             Version bump.</t>
