@@ -14,6 +14,8 @@
     'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6895.xml'>
   <!ENTITY rfc7719 PUBLIC ''
     'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7719.xml'>
+  <!ENTITY rfc8174 PUBLIC ''
+    'http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml'>
 ]>
 
 <rfc category="std" ipr="trust200902" updates="1034, 1035"
@@ -80,11 +82,11 @@
         policy, motivated by security, performance or other
         reasons.</t>
 
-      <t>The DNS specification, as originally published in RFC 1034
-	and RFC 1035, does not include specific guidance for the
+      <t>The DNS specification does not include specific guidance for the
 	behaviour of DNS servers or clients in this situation.  This
-	document aims to provide such guidance, updating the
-	specification.</t>
+	document aims to provide such guidance.</t>
+
+      <t>This document updates RFC 1034 and RFC 1035.</t>
     </abstract>
   </front>
 
@@ -121,10 +123,12 @@
           initiator, and the host sending a DNS response as the
           responder.</t>
 
-        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
-          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY"
-          and "OPTIONAL" in this document are to be interpreted as
-          described in <xref target="RFC2119"/>.</t>
+	<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+	  "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+	  RECOMMENDED", "MAY", and "OPTIONAL" in this document are
+	  to be interpreted as described in BCP 14 <xref
+	  target="RFC2119"/> <xref target="RFC8174"/> when, and
+	  only when, they appear in all capitals, as shown here.</t>
       </section>
     </section>
 
@@ -424,6 +428,7 @@
       &rfc1034;
       &rfc1035;
       &rfc2119;
+      &rfc8174;
     </references>
 
     <references title="Informative References">

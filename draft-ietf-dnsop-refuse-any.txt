@@ -22,10 +22,11 @@ Abstract
    respond to such queries for reasons of local policy, motivated by
    security, performance or other reasons.
 
-   The DNS specification, as originally published in RFC 1034 and RFC
-   1035, does not include specific guidance for the behaviour of DNS
-   servers or clients in this situation.  This document aims to provide
-   such guidance, updating the specification.
+   The DNS specification does not include specific guidance for the
+   behaviour of DNS servers or clients in this situation.  This document
+   aims to provide such guidance.
+
+   This document updates RFC 1034 and RFC 1035.
 
 Status of This Memo
 
@@ -48,7 +49,6 @@ Copyright Notice
 
    Copyright (c) 2018 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
-
 
 
 
@@ -90,7 +90,7 @@ Table of Contents
      12.1.  Normative References . . . . . . . . . . . . . . . . . .   9
      12.2.  Informative References . . . . . . . . . . . . . . . . .   9
      12.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .   9
-   Appendix A.  Editorial Notes  . . . . . . . . . . . . . . . . . .   9
+   Appendix A.  Editorial Notes  . . . . . . . . . . . . . . . . . .  10
      A.1.  Change History  . . . . . . . . . . . . . . . . . . . . .  10
        A.1.1.  draft-ietf-dnsop-refuse-any-07  . . . . . . . . . . .  10
        A.1.2.  draft-ietf-dnsop-refuse-any-06  . . . . . . . . . . .  10
@@ -98,7 +98,7 @@ Table of Contents
        A.1.4.  draft-ietf-dnsop-refuse-any-04  . . . . . . . . . . .  10
        A.1.5.  draft-ietf-dnsop-refuse-any-03  . . . . . . . . . . .  10
        A.1.6.  draft-ietf-dnsop-refuse-any-02  . . . . . . . . . . .  10
-       A.1.7.  draft-ietf-dnsop-refuse-any-01  . . . . . . . . . . .  10
+       A.1.7.  draft-ietf-dnsop-refuse-any-01  . . . . . . . . . . .  11
        A.1.8.  draft-ietf-dnsop-refuse-any-00  . . . . . . . . . . .  11
        A.1.9.  draft-jabley-dnsop-refuse-any-01  . . . . . . . . . .  11
        A.1.10. draft-jabley-dnsop-refuse-any-00  . . . . . . . . . .  11
@@ -143,8 +143,10 @@ Internet-Draft      Minimal Responses for ANY Queries        August 2018
    host sending a DNS response as the responder.
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY" and "OPTIONAL" in this
-   document are to be interpreted as described in [RFC2119].
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
 2.  Motivations for Use of ANY Queries
 
@@ -160,8 +162,6 @@ Internet-Draft      Minimal Responses for ANY Queries        August 2018
    ultimately be received by an authoritative server and will fetch all
    existing RRSets, should include a fallback mechanism to use when that
    does not happen.
-
-
 
 
 
@@ -471,6 +471,10 @@ Internet-Draft      Minimal Responses for ANY Queries        August 2018
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
 12.2.  Informative References
 
    [RFC5358]  Damas, J. and F. Neves, "Preventing Use of Recursive
@@ -491,10 +495,6 @@ Internet-Draft      Minimal Responses for ANY Queries        August 2018
    [1] http://www.iana.org/assignments/dns-parameters/dns-
        parameters.xhtml#dns-parameters-4
 
-Appendix A.  Editorial Notes
-
-   This section (and sub-sections) to be removed prior to publication.
-
 
 
 
@@ -505,6 +505,10 @@ Abley, et al.           Expires February 15, 2019               [Page 9]
 
 Internet-Draft      Minimal Responses for ANY Queries        August 2018
 
+
+Appendix A.  Editorial Notes
+
+   This section (and sub-sections) to be removed prior to publication.
 
 A.1.  Change History
 
@@ -548,10 +552,6 @@ A.1.6.  draft-ietf-dnsop-refuse-any-02
 
    Number of text suggestions from Jeremy Laidman.
 
-A.1.7.  draft-ietf-dnsop-refuse-any-01
-
-   Add IANA Considerations
-
 
 
 
@@ -561,6 +561,10 @@ Abley, et al.           Expires February 15, 2019              [Page 10]
 
 Internet-Draft      Minimal Responses for ANY Queries        August 2018
 
+
+A.1.7.  draft-ietf-dnsop-refuse-any-01
+
+   Add IANA Considerations
 
 A.1.8.  draft-ietf-dnsop-refuse-any-00
 
@@ -602,6 +606,18 @@ Authors' Addresses
    Email: marek@cloudflare.com
 
 
+
+
+
+
+
+
+
+Abley, et al.           Expires February 15, 2019              [Page 11]
+
+Internet-Draft      Minimal Responses for ANY Queries        August 2018
+
+
    Evan Hunt
    ISC
    950 Charter St
@@ -613,4 +629,44 @@ Authors' Addresses
 
 
 
-Abley, et al.           Expires February 15, 2019              [Page 11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Abley, et al.           Expires February 15, 2019              [Page 12]
