@@ -17,7 +17,7 @@
 ]>
 
 <rfc category="std" ipr="trust200902" updates="1034, 1035"
-  docName="draft-ietf-dnsop-refuse-any-06">
+  docName="draft-ietf-dnsop-refuse-any-07">
 
   <?rfc toc="yes" ?>
   <?rfc symrefs="yes" ?>
@@ -58,7 +58,20 @@
       </address>
     </author>
 
-    <date day="5" month="March" year="2018"/>
+    <author initials="E." surname="Hunt" fullname="Evan Hunt">
+     <organization>ISC</organization> 
+     <address>
+       <postal>
+         <street>950 Charter St</street>
+         <city>Redwood City</city> <region>CA</region>
+         <code>94063</code>
+         <country>USA</country>
+       </postal>
+       <email>each@isc.org</email>
+     </address>
+    </author>
+
+    <date day="14" month="August" year="2018"/>
 
     <abstract>
       <t>The Domain Name System (DNS) specifies a query type (QTYPE)
@@ -67,19 +80,21 @@
         policy, motivated by security, performance or other
         reasons.</t>
 
-      <t>The DNS specification does not include specific guidance
-        for the behaviour of DNS servers or clients in this situation.
-        This document aims to provide such guidance.</t>
+      <t>The DNS specification, as originally published in RFC 1034
+	and RFC 1035, does not include specific guidance for the
+	behaviour of DNS servers or clients in this situation.  This
+	document aims to provide such guidance, updating the
+	specification.</t>
     </abstract>
   </front>
 
   <middle>
     <section title="Introduction">
       <t>The Domain Name System (DNS) specifies a query type (QTYPE)
-        "ANY". The operator of an authoritative DNS server might
-        choose not to respond to such queries for reasons of local
-        policy, motivated by security, performance or other
-        reasons.</t>
+	"ANY". The operator of an authoritative DNS server might
+	choose not to respond to such queries for reasons of local
+	policy, motivated by security, performance or other
+	reasons.</t>
 
       <t>The DNS specification <xref target="RFC1034"/> <xref
         target="RFC1035"/> does not include specific guidance for
@@ -193,7 +208,8 @@
         MUST follow the standard algorithms when constructing a
         response.</t>
 
-      <section title="Answer with a Subset of Available RRSets">
+      <section title="Answer with a Subset of Available RRSets"
+        anchor="answer1">
         <t>A DNS responder which receives an ANY query MAY decline
           to provide a conventional ANY response, or MAY instead send
           a response with a single RRSet (or a larger subset of
@@ -213,7 +229,8 @@
 	  available RRSets has been returned.</t>
       </section>
 
-      <section title="Answer with a Synthesised HINFO RRSet"> 
+      <section title="Answer with a Synthesised HINFO RRSet"
+        anchor="answer2">
         <t>If there is no CNAME present at the owner name matching
           the QNAME, the resource record returned in the response
           MAY instead be synthesised, in which case a single HINFO
@@ -238,19 +255,34 @@
           valid RRSIG for the RRSets in the answer (or authority
           if answer is empty) section MUST be returned.  In the
           case of DO=0, the RRSIG SHOULD be omitted.</t>
+
+        <t>A system that receives an HINFO response SHOULD NOT
+	  infer that the response was generated according to this
+	  specification and apply any special processing of the
+	  response, since in general it is not possible to tell
+          with certainty whether the HINFO RRSet received was
+	  synthesised. In particular, systems SHOULD NOT rely upon
+          the HINFO RDATA described in this seection to distinguish
+          between synthesised and non-synthesised HINFO RRSets.</t>
       </section>
 
       <section title="Answer with Best Guess as to Intention">
         <t>In some cases it is possible to guess what the initiator
-          wants in the answer but not always. Some implementations
-          have implemented the spirit of this document by returning
-          all of CNAME or (MX A and AAAA) RRsets that are present.
-          This is not a guess but a heuristic that seems to work
-          well in practice. The main drawback is the size of the
-          answer.</t>
+	  wants in the answer (but not always). Some implementations
+	  have implemented the spirit of this document by returning
+	  all RRSets of RRType CNAME, MX, A and AAAA that are present
+	  at the owner name but suppressing others. This heuristic
+	  seems to work well in practice, satisfying the needs of
+	  some applications whilst suppressing other RRSets such
+	  as TXT and DNSKEY that can often contribute to large
+	  responses. Whilst some applications may be satisfied by
+	  this behaviour, the resulting responses in the general
+	  case are larger than the approaches described in <xref
+	  target="answer1"/> and <xref target="answer2"/>.</t>
 
-        <t>As in the first one if the zone is signed RRSIG
-          MUST be returned if there the DO bit is set on query.</t>
+	<t>As before, if the zone is signed and the DO bit is set
+	  on the corresponding query, an RRSIG RRSet MUST be included
+	  in the response.</t>
       </section>
 
       <section title="Behaviour with TCP Transport">
@@ -377,7 +409,7 @@
     </section>
 
     <section title="Acknowledgements">
-      <t>Evan Hunt and David Lawrence provided valuable observations
+      <t>David Lawrence provided valuable observations
 	and concrete suggestions. Jeremy Laidman helped make the
 	document better. Tony Finch realized that this document was
 	valuable and implemented it while under attack. Richard
@@ -406,6 +438,14 @@
         publication.</t>
 
       <section title="Change History">
+        <section title="draft-ietf-dnsop-refuse-any-07">
+          <t>Address AD's concerns: more colour to describe updates to
+            1034/1035 in the abstract; don't rely upon HINFO RDATA
+            formatting; language cleanup around guess intent. Add Evan
+            as author (originator of the "choose one record" response
+            idea).</t>
+        </section>
+
         <section title="draft-ietf-dnsop-refuse-any-06">
 	  <t>Update RFC 1034 as well as RFC 1035; define the term
 	    "conventional ANY response"; soften and qualify ANY
