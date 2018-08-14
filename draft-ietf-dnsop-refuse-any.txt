@@ -370,7 +370,7 @@ Internet-Draft      Minimal Responses for ANY Queries        August 2018
    when processing an ANY query is legitimate and consistent with
    [RFC1035]; it can be argued that ANY does not always mean ALL, as
    used in section 3.2.3 of [RFC1035].  The main difference here is that
-   the TC bit SHOULD not be set on the response indicating that this is
+   the TC bit SHOULD NOT be set on the response indicating that this is
    not a complete answer.
 
    This document describes optional behaviour for both DNS initiators

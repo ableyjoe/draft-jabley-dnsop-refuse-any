@@ -340,7 +340,7 @@
 	consistent with <xref target="RFC1035"/>; it can be argued
 	that ANY does not always mean ALL, as used in section 3.2.3
 	of <xref target="RFC1035"/>. The main difference here is
-	that the TC bit SHOULD not be set on the response indicating
+	that the TC bit SHOULD NOT be set on the response indicating
 	that this is not a complete answer.</t>
 
       <t>This document describes optional behaviour for both DNS
